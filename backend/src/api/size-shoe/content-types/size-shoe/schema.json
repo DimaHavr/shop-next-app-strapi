@@ -1,0 +1,18 @@
+{
+  "kind": "collectionType",
+  "collectionName": "size_shoes",
+  "info": {
+    "singularName": "size-shoe",
+    "pluralName": "size-shoes",
+    "displayName": "Size_Shoe"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "size_shoe": {
+      "type": "string"
+    }
+  }
+}

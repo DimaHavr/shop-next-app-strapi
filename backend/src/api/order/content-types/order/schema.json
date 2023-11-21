@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "orders",
+  "info": {
+    "singularName": "order",
+    "pluralName": "orders",
+    "displayName": "Order"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "order_id": {
+      "type": "string"
+    },
+    "article_number": {
+      "type": "string"
+    },
+    "drop_shop_name": {
+      "type": "string"
+    },
+    "personal_data": {
+      "type": "string"
+    },
+    "delivery_data": {
+      "type": "string"
+    },
+    "paymant_data": {
+      "type": "string"
+    },
+    "order_subtotal": {
+      "type": "string"
+    },
+    "product_list": {
+      "type": "string"
+    }
+  }
+}

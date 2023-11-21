@@ -1,0 +1,123 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+::-webkit-scrollbar {
+  width: 10px;
+  background-color: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #17696a;
+}
+
+::-moz-scrollbar {
+  width: 10px;
+  background-color: #f1f1f1;
+}
+
+::-moz-scrollbar-thumb {
+  background-color: #17696a;
+}
+
+@layer base {
+  html {
+    font-family: Inter, sans-serif;
+  }
+  h2 {
+    @apply text-2xl;
+  }
+}
+
+@layer components {
+  .container {
+    @apply px-4 my-0 mx-auto; 
+    @apply sm:w-full; 
+    @apply md:max-w-screen-md mx-auto; 
+    @apply lg:max-w-5xl; 
+    @apply xl:max-w-7xl; 
+  }
+  
+  .outline-text {
+    color: white;
+    text-shadow:
+      -1px -1px 0 #fff,
+      1px -1px 0 #fff,
+      -1px 1px 0 #fff,
+      1px 2px 0 #fff;
+  }
+
+  .section {
+    @apply py-14 my-0 w-full; 
+  }
+
+  .button {
+    @apply cursor-pointer; 
+  }
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.new-arrivals-slider .swiper-pagination{
+     --swiper-pagination-bottom: 1px;
+    bottom: var( --swiper-pagination-bottom);
+    
+}
+.new-arrivals-slider .swiper-pagination-bullet{
+  width: 35px;
+  height: 8px;
+  border-radius:16px;
+  text-align: center;
+  line-height: 20px;
+  font-size: 12px;
+  color: #000;
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.new-arrivals-slider .swiper-pagination-bullet-active{
+  color: #fff;
+  background: #17696A;
+}
+
+
+.hero-slider .swiper-pagination{
+       --swiper-pagination-bottom: 158px;
+    bottom: var( --swiper-pagination-bottom);
+    left: -440px !important;
+}
+
+.hero-slider .swiper-pagination-bullet{
+  width: 155px;
+  height: 12px;
+  border-radius:16px;
+  text-align: center;
+  line-height: 20px;
+  font-size: 12px;
+  color: #000;
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.2); 
+ transition: all ease-in-out 0.3s;
+}
+
+.hero-slider .swiper-pagination-bullet:hover {
+  transform: scale(1.05);
+  opacity: 0.8;
+}
+.hero-slider .swiper-pagination-bullet-active{
+  color: #fff;
+  background: #17696A;
+}

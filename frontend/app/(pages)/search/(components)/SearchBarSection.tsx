@@ -1,7 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
 'use client'
 
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { FaSearch } from 'react-icons/fa'
 
 const pageValuesArr = [
@@ -20,23 +22,23 @@ const SearchBarSection = () => {
     searchParams.get('pageFilter') || '',
   )
 
-  useEffect(() => {
-    router.push(
-      `/search?query=${queryValue}${[pageValue && `&pageFilter=${pageValue}`]}`,
-    )
-  }, [queryValue, pageValue, router])
+  // useEffect(() => {
+  //   router.push(
+  //     `/search?query=${queryValue}${[pageValue && `&pageFilter=${pageValue}`]}`,
+  //   )
+  // }, [pageValue])
 
   return (
     <div className='mt-12 flex flex-col items-center justify-center gap-4'>
       <form>
-        <div className='text-mid-grey flex w-[400px] rounded-2xl border-[1px] bg-[#fff] p-1 shadow-xl max-md:w-[280px]'>
+        <div className='flex w-[400px] rounded-2xl border-[1px] bg-[#fff] p-1 text-mid-grey shadow-xl max-md:w-[280px]'>
           <input
             type='text'
             name='query'
             placeholder='Знайти...'
             value={queryValue}
             onChange={e => setQueryValue(e.target.value)}
-            className=' font-exo_2 text-black-dis h-[40px] w-full bg-[#fff] p-1 pl-2 outline-none  focus:outline-none'
+            className=' h-[40px] w-full bg-[#fff] p-1 pl-2 font-exo_2 text-black-dis outline-none  focus:outline-none'
           />
           <button
             onClick={() => {
@@ -62,9 +64,16 @@ const SearchBarSection = () => {
                 type='button'
                 className={`h-[40px] w-[100px]  ${
                   pageValue === item.title &&
-                  'border-1 border-white-dis text-white-dis shadow-box rounded-2xl'
+                  'rounded-2xl border-1 border-white-dis text-white-dis shadow-box'
                 }`}
-                onClick={() => setPageValue(item.title)}
+                onClick={() => {
+                  setPageValue(item.title)
+                  router.push(
+                    `/search?query=${queryValue}${[
+                      pageValue && `&pageFilter=${pageValue}`,
+                    ]}`,
+                  )
+                }}
               >
                 <span className='font-exo_2 text-md text-primary-green'>
                   {item.title}

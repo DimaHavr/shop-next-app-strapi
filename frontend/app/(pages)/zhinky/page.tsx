@@ -20,9 +20,11 @@ export default async function IndexPage({
   const priceValueParams = searchParams?.price
     ? [searchParams?.price].toString()
     : ''
+
   const colorValueParams = searchParams?.color
     ? [searchParams?.color].toString()
     : ''
+
   const sizeValueParams = searchParams?.size
     ? [searchParams?.size].toString()
     : ''

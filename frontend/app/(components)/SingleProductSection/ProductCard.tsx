@@ -140,6 +140,7 @@ const ProductCard: React.FC<ProductItemProps> = ({
                 label='Виберіть колір'
                 variant='underlined'
                 className='max-w-xs'
+                selectedKeys={[color]}
                 onChange={handleSelectionChangeColor}
               >
                 {productItem.attributes.colors.data.map(item => (
@@ -157,6 +158,7 @@ const ProductCard: React.FC<ProductItemProps> = ({
                 label='Виберіть розмір'
                 variant='underlined'
                 className='max-w-xs'
+                selectedKeys={[size]}
                 onChange={handleSelectionChangeSize}
               >
                 {productItem.attributes.sizes.data.map(item => (

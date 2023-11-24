@@ -1,8 +1,9 @@
 import Breadcrumb from '@/app/(components)/ProductsSection/Breadcrumb'
 import SubscribeSection from '@/app/(layouts)/SubscribeSection'
 import fetchData from '@/app/(server)/api/service/strapi/fetchData'
-import SearchProductsList from './(components)/SearchProductsList'
+
 import SearchBarSection from './(components)/SearchBarSection'
+import SearchProductsList from './(components)/SearchProductsList'
 
 export default async function IndexPage({
   searchParams,

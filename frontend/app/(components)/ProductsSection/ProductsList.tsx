@@ -1,10 +1,11 @@
 'use client'
 
-import EmptySection from '../EmptySection'
-import Toolbar from './Toolbar'
 import { useSearchParams } from 'next/navigation'
 import { useState } from 'react'
+
+import EmptySection from '../EmptySection'
 import ProductsListItem from './ProductsListItem'
+import Toolbar from './Toolbar'
 
 export interface ProductItem {
   id: number

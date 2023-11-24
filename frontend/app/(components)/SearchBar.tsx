@@ -9,9 +9,7 @@ interface SearchInputProps {
   toggleSearchBar: () => void
 }
 
-const SearchBar: React.FC<SearchInputProps> = ({
-  toggleSearchBar,
-}) => {
+const SearchBar: React.FC<SearchInputProps> = ({ toggleSearchBar }) => {
   const SearchBarRef = useRef<HTMLDivElement>(null)
 
   const onBackdropCloseSearchBar = useCallback(

@@ -3,12 +3,13 @@
 'use client'
 
 import { Pagination, Select, SelectItem } from '@nextui-org/react'
+import { AnimatePresence } from 'framer-motion'
 import { usePathname, useRouter } from 'next/navigation'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { ImEqualizer } from 'react-icons/im'
-import { ProductItem } from './ProductsList'
+
 import FilterSidebar from './FilterSidebar'
-import { AnimatePresence } from 'framer-motion'
+import type { ProductItem } from './ProductsList'
 
 interface ISortValue {
   label: string

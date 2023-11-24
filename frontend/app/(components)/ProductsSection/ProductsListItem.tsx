@@ -12,7 +12,9 @@ import {
 } from '@/app/(redux)/favorites/favoritesSlice'
 import { selectFavoritesProducts } from '@/app/(redux)/favorites/selectors'
 import { useAppDispatch, useAppSelector } from '@/app/(redux)/hooks'
-import { ProductItem } from './ProductsList'
+
+import type { ProductItem } from './ProductsList'
+
 interface ProductsListItemProps {
   item: ProductItem
 }

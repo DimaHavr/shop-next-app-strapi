@@ -1,7 +1,9 @@
 import dynamic from 'next/dynamic'
 
-import HeroBanner from './(layouts)/HeroSection'
 import CategoriesSection from './(layouts)/CategoriesSection'
+import HeroBanner from './(layouts)/HeroSection'
+import fetchData from './(server)/api/service/strapi/fetchData'
+
 const NewArrivalsSection = dynamic(
   () => import('./(layouts)/NewArrivalsSection'),
 )
@@ -9,7 +11,7 @@ const PopularCategories = dynamic(() => import('./(layouts)/PopularCategories'))
 const ServicesSection = dynamic(() => import('./(layouts)/ServicesSection'))
 const BlogSection = dynamic(() => import('./(layouts)/BlogSection'))
 const SubscribeSection = dynamic(() => import('./(layouts)/SubscribeSection'))
-import fetchData from './(server)/api/service/strapi/fetchData'
+
 const Home = async () => {
   // const trendingWomenProductsUrl = `/api/products?populate=*&[filters][categories][title][$startsWithi]=Жіноче&[filters][type][$eq]=trending&pagination[limit]=5`
   // const trendingMensProductsUrl = `/api/products?populate=*&[filters][categories][title][$startsWithi]=Чоловіче&[filters][type][$eq]=trending&pagination[limit]=5`

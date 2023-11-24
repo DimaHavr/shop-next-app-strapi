@@ -1,10 +1,12 @@
 'use client'
 
 import { Rating } from '@smastrom/react-rating'
+import { AnimatePresence, motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import { FaHeart, FaRegHeart } from 'react-icons/fa'
+
 import EmptySection from '@/app/(components)/EmptySection'
 import type { ProductItem } from '@/app/(components)/ProductsSection/ProductsList'
 import {
@@ -13,7 +15,7 @@ import {
 } from '@/app/(redux)/favorites/favoritesSlice'
 import { selectFavoritesProducts } from '@/app/(redux)/favorites/selectors'
 import { useAppDispatch, useAppSelector } from '@/app/(redux)/hooks'
-import { AnimatePresence, motion } from 'framer-motion'
+
 interface SearchProductsListProps {
   productsData: {
     data: ProductItem[]
@@ -39,7 +41,7 @@ const SearchProductsList: React.FC<SearchProductsListProps> = ({
   return productsData.data.length === 0 ? (
     <EmptySection />
   ) : (
-    <section className='pt-12 pb-14'>
+    <section className='pb-14 pt-12'>
       <div className='container'>
         <ul className=' flex flex-wrap items-center justify-center gap-6'>
           {productsData.data.map(item => {

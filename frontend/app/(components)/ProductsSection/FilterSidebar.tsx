@@ -3,9 +3,9 @@
 import type { SliderValue } from '@nextui-org/react'
 import { Accordion, AccordionItem, Slider } from '@nextui-org/react'
 import { motion } from 'framer-motion'
+import { usePathname, useRouter } from 'next/navigation'
 import { useCallback, useRef, useState } from 'react'
 import { MdOutlineClose } from 'react-icons/md'
-import { usePathname, useRouter } from 'next/navigation'
 
 import useCustomScrollbarLock from '@/app/(hooks)/useCustomScrollbarLock'
 
@@ -71,10 +71,10 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   )
   const filteredDataSizes = filterStartData.data.reduce(
     (accumulator: string[], item: any) => {
-      const sizeItem: string[] = item.attributes.sizes.data.map(
+      const sizeItems: string[] = item.attributes.sizes.data.map(
         (size: { attributes: { size: string } }) => size.attributes.size,
       )
-      sizeItem.forEach(sizeItem => {
+      sizeItems.forEach(sizeItem => {
         if (!accumulator.includes(sizeItem)) {
           accumulator.push(sizeItem)
         }

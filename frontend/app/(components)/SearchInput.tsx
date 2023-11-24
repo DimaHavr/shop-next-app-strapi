@@ -28,6 +28,7 @@ const SearchInput = () => {
           className='h-[35px] w-[250px] p-1 pl-2 font-exo_2 text-black-dis outline-none  focus:outline-none'
         />
         <button
+          type='button'
           onClick={() => {
             router.push(`/search?query=${queryValue}`)
           }}

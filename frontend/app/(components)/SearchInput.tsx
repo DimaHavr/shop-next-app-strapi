@@ -17,7 +17,7 @@ const SearchInput = () => {
           transition: { duration: 0.3 },
         }}
         exit={{ opacity: 0, transition: { duration: 0.3 } }}
-        className='flex rounded-2xl border-[1px] bg-white-dis p-1 text-mid-grey'
+        className='bg-white-dis text-mid-grey flex rounded-2xl border-[1px] p-1'
       >
         <input
           type='text'
@@ -25,12 +25,14 @@ const SearchInput = () => {
           placeholder='Знайти...'
           value={queryValue}
           onChange={e => setQueryValue(e.target.value)}
-          className='h-[35px] w-[250px] p-1 pl-2 font-exo_2 text-black-dis outline-none  focus:outline-none'
+          className='font-exo_2 text-black-dis h-[35px] w-[250px] p-1 pl-2 outline-none  focus:outline-none'
         />
         <button
           type='button'
           onClick={() => {
             router.push(`/search?query=${queryValue}`)
+            router.refresh()
+            setQueryValue('')
           }}
           className='pr-2'
           aria-label='Пошук'

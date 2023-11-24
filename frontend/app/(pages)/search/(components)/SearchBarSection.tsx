@@ -26,19 +26,20 @@ const SearchBarSection = () => {
     router.push(
       `/search?query=${queryValue}${[pageValue && `&pageFilter=${pageValue}`]}`,
     )
+    router.refresh()
   }, [pageValue])
 
   return (
     <div className='mt-12 flex flex-col items-center justify-center gap-4'>
       <form>
-        <div className='text-mid-grey flex w-[400px] rounded-2xl border-[1px] bg-[#fff] p-1 shadow-xl max-md:w-[280px]'>
+        <div className='text-mid-grey flex w-[400px] rounded-2xl border-[1px] p-1 shadow-xl max-md:w-[280px]'>
           <input
             type='text'
             name='query'
             placeholder='Знайти...'
             value={queryValue}
             onChange={e => setQueryValue(e.target.value)}
-            className=' font-exo_2 text-black-dis h-[40px] w-full bg-[#fff] p-1 pl-2 outline-none  focus:outline-none'
+            className=' font-exo_2 text-black-dis h-[40px] w-full p-1 pl-2 outline-none focus:outline-none'
           />
           <button
             onClick={() => {

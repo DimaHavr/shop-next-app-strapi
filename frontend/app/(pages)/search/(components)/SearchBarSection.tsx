@@ -26,7 +26,6 @@ const SearchBarSection = () => {
     router.push(
       `/search?query=${queryValue}${[pageValue && `&pageFilter=${pageValue}`]}`,
     )
-    router.refresh()
   }, [pageValue])
 
   return (

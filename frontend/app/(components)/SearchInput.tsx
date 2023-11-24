@@ -1,13 +1,16 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { FaSearch } from 'react-icons/fa'
 
 const SearchInput = () => {
-  const [queryValue, setQueryValue] = useState<string>('')
   const router = useRouter()
+  const pathname = usePathname()
+  const [queryValue, setQueryValue] = useState<string>('')
+  const isSearchPage = pathname === '/search'
+
   return (
     <form>
       <motion.div
@@ -24,14 +27,15 @@ const SearchInput = () => {
           name='query'
           placeholder='Знайти...'
           value={queryValue}
+          disabled={isSearchPage}
           onChange={e => setQueryValue(e.target.value)}
           className='font-exo_2 text-black-dis h-[35px] w-[250px] p-1 pl-2 outline-none  focus:outline-none'
         />
         <button
           type='button'
+          disabled={isSearchPage}
           onClick={() => {
             router.push(`/search?query=${queryValue}`)
-            router.refresh()
             setQueryValue('')
           }}
           className='pr-2'
@@ -39,7 +43,10 @@ const SearchInput = () => {
         >
           <FaSearch
             color='#17696A'
-            className=' transition-opacity  hover:opacity-80 focus:opacity-80 '
+            className={`${
+              !isSearchPage &&
+              'transition-opacity  hover:opacity-80 focus:opacity-80'
+            }`}
             size={20}
           />
         </button>

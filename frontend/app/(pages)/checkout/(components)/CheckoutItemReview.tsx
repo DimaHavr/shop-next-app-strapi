@@ -52,7 +52,7 @@ const CheckoutItemReview: React.FC<CheckoutItemProps> = ({
                   <Link href={slug} className=' pr-3 font-exo_2 text-md'>
                     {item.product.attributes.img && (
                       <Image
-                        className='h-[120px] w-[120px] cursor-pointer object-cover '
+                        className='h-auto w-[120px] cursor-pointer object-cover '
                         src={item.product.attributes.img.data[0].attributes.url}
                         width={120}
                         height={120}

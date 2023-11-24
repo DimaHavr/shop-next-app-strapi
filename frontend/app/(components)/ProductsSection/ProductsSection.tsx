@@ -2,7 +2,6 @@ import type { ProductItem } from './ProductsList'
 import ProductsList from './ProductsList'
 
 interface ProductsSectionProps {
-  productsUrl: string
   filterStartData: {
     meta: {
       pagination: {
@@ -23,14 +22,12 @@ interface ProductsSectionProps {
 
 const ProductsSection: React.FC<ProductsSectionProps> = ({
   productsData,
-  productsUrl,
   filterStartData,
 }) => {
   return (
     <section className='pb-14'>
       <ProductsList
         productsData={productsData}
-        productsUrl={productsUrl}
         filterStartData={filterStartData}
       />
     </section>

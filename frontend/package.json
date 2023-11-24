@@ -35,7 +35,7 @@
     "lottie-web": "^5.12.2",
     "markdown-it": "^13.0.1",
     "nanoid": "^4.0.2",
-    "next": "13.4.11",
+    "next": "^14.0.3",
     "next-seo": "^6.1.0",
     "next-sitemap": "^4.1.8",
     "photoswipe": "^5.4.2",

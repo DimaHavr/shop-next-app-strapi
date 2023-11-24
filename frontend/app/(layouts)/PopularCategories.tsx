@@ -97,9 +97,10 @@ const PopularCategories: React.FC<PopularCategoriesProps> = ({
                     <Image
                       className=' h-[200px] min-w-[200px] rounded-[100%] object-cover shadow-box'
                       src={imageUrl}
-                      alt={item.attributes.img.data.attributes.alt}
+                      alt={item.attributes.title}
                       width={item.attributes.img.data.attributes.width}
                       height={item.attributes.img.data.attributes.height}
+                      priority
                     />
                     <h2 className=' w-full font-exo_2 text-md font-semibold text-black-dis '>
                       {item.attributes.title}

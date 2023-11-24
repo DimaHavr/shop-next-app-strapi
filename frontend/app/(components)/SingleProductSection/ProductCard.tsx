@@ -122,9 +122,13 @@ const ProductCard: React.FC<ProductItemProps> = ({
           <h3 className='line-clamp-2 text-left font-exo_2 text-md font-semibold text-black-dis '>
             {productItem.attributes.title}
           </h3>
-          <p className='flex items-baseline gap-1 font-exo_2 text-lg uppercase'>
+          <p
+            className={`flex items-baseline gap-1 font-exo_2 text-lg uppercase ${
+              productItem.attributes.discount ? 'text-[red]' : 'text-black-dis'
+            }`}
+          >
             {productItem.attributes.discount && (
-              <span className='text-base text-[red] line-through'>
+              <span className='text-base text-black-dis line-through'>
                 {oldPrice.toFixed(2)}
               </span>
             )}
@@ -136,7 +140,6 @@ const ProductCard: React.FC<ProductItemProps> = ({
                 label='Виберіть колір'
                 variant='underlined'
                 className='max-w-xs'
-                selectedKeys={[color]}
                 onChange={handleSelectionChangeColor}
               >
                 {productItem.attributes.colors.data.map(item => (
@@ -154,7 +157,6 @@ const ProductCard: React.FC<ProductItemProps> = ({
                 label='Виберіть розмір'
                 variant='underlined'
                 className='max-w-xs'
-                selectedKeys={[size]}
                 onChange={handleSelectionChangeSize}
               >
                 {productItem.attributes.sizes.data.map(item => (
@@ -214,6 +216,7 @@ const ProductCard: React.FC<ProductItemProps> = ({
               exit={{ scale: 0.8, transition: { duration: 0.3 } }}
               type='button'
               onClick={() => handleRemoveFromFavorites(productItem.id)}
+              aria-label='Видалити з улюлених'
             >
               <FaHeart
                 color='#17696A'
@@ -233,6 +236,7 @@ const ProductCard: React.FC<ProductItemProps> = ({
               exit={{ scale: 0.8, transition: { duration: 0.3 } }}
               type='button'
               onClick={() => handleAddToFavorites(productItem)}
+              aria-label='Додати до улюблених'
             >
               <FaRegHeart
                 color='#17696A'

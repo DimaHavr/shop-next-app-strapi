@@ -44,11 +44,11 @@ const CartItems: React.FC<CartItemProps> = ({ cartItems }) => {
             <div className='flex gap-2 px-4'>
               <Link
                 href={slug}
-                className=' line-clamp-2 pr-3 font-exo_2 text-md text-white-dis'
+                className=' line-clamp-2  min-w-[100px] pr-3 font-exo_2 text-md text-white-dis'
               >
                 {item.product.attributes.img && (
                   <Image
-                    className='h-[120px] w-[120px] cursor-pointer object-cover '
+                    className='h-auto  cursor-pointer object-cover '
                     src={item.product.attributes.img.data[0].attributes.url}
                     width={120}
                     height={120}

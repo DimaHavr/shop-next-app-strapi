@@ -8,11 +8,64 @@ interface IndexPageProps {
   params: {
     category: string
   }
+  searchParams?: { [key: string]: string | string[] | undefined }
 }
 
-export default async function IndexPage({ params }: IndexPageProps) {
-  const categoryProductsUrl = `/products?populate=*&[filters][category][slug][$eq]=${params.category}&pagination[pageSize]=12`
-  const categoryFilterProductsUrl = `/products?populate=colors,sizes&[filters][category][slug][$eq]=${params.category}`
+export default async function IndexPage({
+  params,
+  searchParams,
+}: IndexPageProps) {
+  const currentPage = Number(searchParams?.page) || 1
+  const sortLatestUrl =
+    searchParams?.sort === 'latest' ? `&sort=createdAt:desc` : ''
+  const sortLowestPriceUrl =
+    searchParams?.sort === 'lowest_price' ? `&sort=price:asc` : ''
+  const sortHighestPriceUrl =
+    searchParams?.sort === 'highest_price' ? `&sort=price:desc` : ''
+
+  const priceValueParams = searchParams?.price
+    ? [searchParams?.price].toString()
+    : ''
+  const colorValueParams = searchParams?.color
+    ? [searchParams?.color].toString()
+    : ''
+  const sizeValueParams = searchParams?.size
+    ? [searchParams?.size].toString()
+    : ''
+
+  const priceValueArr = priceValueParams?.split(',')
+  const colorValueParamsArr = colorValueParams.length
+    ? colorValueParams?.toString().split(',')
+    : []
+  const sizeValueParamsArr = sizeValueParams.length
+    ? sizeValueParams?.toString().split(',')
+    : []
+
+  const filterMinMaxPrice =
+    priceValueArr[0] !== ''
+      ? `&filters[price][$gte]=${priceValueArr[0]}&filters[price][$lte]=${priceValueArr[1]}`
+      : ''
+
+  const colorsFilterUrl =
+    Array.isArray(colorValueParamsArr) && colorValueParamsArr.length > 0
+      ? colorValueParamsArr
+          .map(
+            (item, index) =>
+              `&filters[colors][name][$in][${index + 1}]=${item}`,
+          )
+          .join('')
+      : ''
+  const sizesFilterUrl =
+    Array.isArray(sizeValueParamsArr) && sizeValueParamsArr.length > 0
+      ? sizeValueParamsArr
+          .map(
+            (item, index) => `&filters[sizes][size][$in][${index + 1}]=${item}`,
+          )
+          .join('')
+      : ''
+
+  const categoryProductsUrl = `/products?populate=*&[filters][category][slug][$eq]=${params.category}&pagination[pageSize]=12&pagination[page]=${currentPage}${sortLatestUrl}${sortLowestPriceUrl}${sortHighestPriceUrl}${filterMinMaxPrice}${colorsFilterUrl}${sizesFilterUrl}`
+  const categoryFilterProductsUrl = `/products?populate=colors,sizes,category,subcategory,page&[filters][category][slug][$eq]=${params.category}`
   const currentCategoryUrl = `/categories?populate=*&[filters][slug][$eq]=${params.category}`
   const categoriesUrl = `/categories?populate=*&[filters][page][slug][$eq]=choloviky`
   const categoriesData = await fetchData(categoriesUrl)
@@ -37,12 +90,12 @@ export default async function IndexPage({ params }: IndexPageProps) {
       <ProductsSection
         filterStartData={categoryFilterProductsData}
         productsData={categoryProductsData}
-        productsUrl={categoryProductsUrl}
       />
       <SubscribeSection />
     </main>
   )
 }
+
 export async function generateStaticParams() {
   const url = `/categories`
   const category = await fetchData(url)

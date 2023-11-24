@@ -185,6 +185,7 @@ const GeneralInfo: React.FC<ProductItemProps> = ({
             height={600}
             alt='selected-image'
             onClick={handleClick}
+            priority
           />
         )}
 
@@ -215,9 +216,13 @@ const GeneralInfo: React.FC<ProductItemProps> = ({
           {productItem.attributes.title}
         </h2>
         <div className='flex w-full items-start justify-between gap-4 max-md:flex-col-reverse max-md:justify-start'>
-          <p className='flex items-baseline gap-1  font-exo_2 text-lg uppercase'>
+          <p
+            className={`flex items-baseline gap-1  font-exo_2 text-lg uppercase ${
+              productItem.attributes.discount ? 'text-[red]' : 'text-black-dis'
+            }`}
+          >
             {productItem.attributes.discount && (
-              <span className='text-base text-[red] line-through'>
+              <span className='text-base text-black-dis line-through'>
                 {oldPrice.toFixed(2)}
               </span>
             )}
@@ -237,7 +242,6 @@ const GeneralInfo: React.FC<ProductItemProps> = ({
             label='Виберіть колір'
             variant='underlined'
             className='max-w-xs'
-            selectedKeys={[color]}
             onChange={handleSelectionChangeColor}
           >
             {productItem.attributes.colors.data.map(item => (
@@ -255,7 +259,6 @@ const GeneralInfo: React.FC<ProductItemProps> = ({
             label='Виберіть розмір'
             variant='underlined'
             className='max-w-xs'
-            selectedKeys={[size]}
             onChange={handleSelectionChangeSize}
           >
             {productItem.attributes.sizes.data.map(item => (
@@ -309,9 +312,10 @@ const GeneralInfo: React.FC<ProductItemProps> = ({
                   type='button'
                   onClick={() => handleRemoveFromFavorites(productItem.id)}
                   className='flex items-center justify-center gap-2'
+                  aria-label='Видалити з улюлених'
                 >
                   <p className='font-exo_2 text-lg font-bold'>
-                    Усунути з улюбленого
+                    Видалити з улюлених
                   </p>
                   <FaHeart
                     color='#17696A'
@@ -337,6 +341,7 @@ const GeneralInfo: React.FC<ProductItemProps> = ({
                   type='button'
                   onClick={() => handleAddToFavorites(productItem)}
                   className='flex items-center justify-center gap-2'
+                  aria-label='Додати до улюблених'
                 >
                   <p className='font-exo_2 text-lg font-bold'>
                     Додати в улюблене

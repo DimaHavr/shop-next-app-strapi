@@ -3,17 +3,12 @@
 'use client'
 
 import { Pagination, Select, SelectItem } from '@nextui-org/react'
-import axios from 'axios'
-import { AnimatePresence } from 'framer-motion'
 import { usePathname, useRouter } from 'next/navigation'
-import React, { useCallback, useEffect, useRef, useState , useMemo} from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { ImEqualizer } from 'react-icons/im'
-
-import useLocalStorage from '@/app/(hooks)/useLocalStorage '
-import getHeaders from '@/app/(utils)/getHeaders'
-
+import { ProductItem } from './ProductsList'
 import FilterSidebar from './FilterSidebar'
-import type { ProductItem } from './ProductsList'
+import { AnimatePresence } from 'framer-motion'
 
 interface ISortValue {
   label: string
@@ -40,170 +35,149 @@ export const sortValues: ISortValue[] = [
 ]
 
 interface ToolbarProps {
-  setCurrentPage: (value: number) => void
-  currentPage: number
+  sizeValueParams: any
+  setSizeValueParams: any
+  setColorValueParams: any
+  colorValueParams: any
+  setPriceValueParams: any
+  priceValueParams: any
+  pageValue: number
+  sortValue: any
+  setSortValue: any
+  setPageValue: (page: number) => void
   totalPages: number
-  setTotalPages: (value: number) => void
   filterStartData: {
-    data: ProductItem[]
     meta: {
       pagination: {
         total: number
       }
     }
+    data: ProductItem[]
   }
-
-  productsUrl: string
-  setProducts: React.Dispatch<
-    React.SetStateAction<{
-      data: ProductItem[]
-      meta: {
-        pagination: {
-          total: number
-        }
+  productsData: {
+    meta: {
+      pagination: {
+        total: number
       }
-    }>
-  >
-  handleSelectionChangeSortValue: (
-    e: React.ChangeEvent<HTMLSelectElement>,
-  ) => void
-  sortValue: string
+    }
+    data: ProductItem[]
+  }
 }
 
-export interface IFilterData {
-  priceValues?: [number, number]
-  colorValues?: string[]
-  sizeValues?: string[]
-}
 const Toolbar: React.FC<ToolbarProps> = ({
-  filterStartData,
-  setProducts,
-  productsUrl,
-  handleSelectionChangeSortValue,
-  sortValue,
+  colorValueParams,
+  setColorValueParams,
   totalPages,
-  setTotalPages,
-  setCurrentPage,
-  currentPage,
+  filterStartData,
+  pageValue,
+  sortValue,
+  setPageValue,
+  setSortValue,
+  setPriceValueParams,
+  priceValueParams,
+  setSizeValueParams,
+  sizeValueParams,
+  productsData,
 }) => {
+  const listRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
   const pathname = usePathname()
-  const listRef = useRef<HTMLDivElement>(null)
-
   const [filterSidebarOpen, setFilterSidebarOpen] = useState<boolean>(false)
-  const [filterData, setFilterData] = useLocalStorage<IFilterData>(
-    'filterData',
-    {},
-  )
-  const minPrice: number | null = filterData?.priceValues?.[0] || null
-  const maxPrice: number | null = filterData?.priceValues?.[1] || null
   const toggleFilterSidebar = useCallback(() => {
-    setFilterSidebarOpen(prev => !prev)
+    setFilterSidebarOpen((prev: boolean) => !prev)
   }, [])
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page)
-    if (listRef.current) {
-      listRef.current.scrollIntoView({ behavior: 'smooth' })
-    }
+  const priceValueParamsArr = priceValueParams
+    ? priceValueParams.split(',')
+    : null
+
+  const colorValueParamsArr = colorValueParams.length
+    ? colorValueParams?.toString().split(',')
+    : []
+
+  const sizeValueParamsArr = sizeValueParams.length
+    ? sizeValueParams?.toString().split(',')
+    : []
+
+  const priceFiltersUrl =
+    priceValueParamsArr !== null
+      ? `&price=${priceValueParamsArr[0]},${priceValueParamsArr[1]}`
+      : ''
+
+  const colorsFilterUrl =
+    Array.isArray(colorValueParamsArr) && colorValueParamsArr.length > 0
+      ? `&color=${colorValueParamsArr.map(item => item)}`
+      : ''
+
+  const sizesFilterUrl =
+    Array.isArray(colorValueParamsArr) && sizeValueParamsArr.length > 0
+      ? `&size=${sizeValueParamsArr.map((item: any) => item)}`
+      : ''
+
+  const handleSelectionChangeSortValue = (
+    e: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    const newValue = e.target.value
+    setSortValue(newValue)
   }
 
-  const colorsFilterUrl = filterData.colorValues?.length
-    ? filterData.colorValues
-        ?.map(
-          (item, index) => `&filters[colors][name][$in][${index + 1}]=${item}`,
-        )
-        .join('')
-    : ''
+  const handleChangePriceFilterValue = (prices: number[]) => {
+    setPriceValueParams(prices.toString() || '')
+  }
+  const handleChangeColorFilterValue = (colors: string[]) => {
+    setColorValueParams(colors.toString() || [])
+  }
+  const handleChangeSizeFilterValue = (sizes: string[]) => {
+    setSizeValueParams(sizes.toString() || [])
+  }
 
-  const sizesFilterUrl = filterData.sizeValues?.length
-    ? filterData.sizeValues
-        ?.map(
-          (item, index) => `&filters[sizes][size][$in][${index + 1}]=${item}`,
-        )
-        .join('')
-    : ''
+  useEffect(() => {
+    router.push(
+      `${pathname}?page=${pageValue}${
+        sortValue === 'default' ? '' : `&sort=${sortValue}`
+      }${priceFiltersUrl}${colorsFilterUrl}${sizesFilterUrl}`,
+    )
+    router.refresh()
+  }, [
+    sortValue,
+    pageValue,
+    pathname,
+    priceFiltersUrl,
+    router,
+    colorsFilterUrl,
+    sizesFilterUrl,
+  ])
 
-  const sortLatestUrl = sortValue === 'latest' ? `&sort=createdAt:desc` : ''
-  const sortLowestPriceUrl =
-    sortValue === 'lowest_price' ? `&sort=price:asc` : ''
-  const sortHighestPriceUrl =
-    sortValue === 'highest_price' ? `&sort=price:desc` : ''
-  const filterMinMaxPrice =
-    minPrice !== null
-      ? `&filters[price][$gte]=${minPrice}&filters[price][$lte]=${maxPrice}`
-      : ''
-  const paginationUrl = currentPage && `&pagination[page]=${currentPage}`
-
- const memoizedDependencies = useMemo(
-   () => ({
-     sortValue,
-     filterData,
-     currentPage,
-   }),
-   [sortValue, filterData, currentPage],
- )
-
- useEffect(() => {
-   async function fetchData() {
-     try {
-       const url = `${productsUrl}${paginationUrl}${sortLatestUrl}${sortLowestPriceUrl}${sortHighestPriceUrl}${filterMinMaxPrice}${colorsFilterUrl}${sizesFilterUrl}`
-
-       const res = await axios.get(
-         `https://shop-strapi.onrender.com/api${url}`,
-         {
-           headers: getHeaders(),
-         },
-       )
-       router.push(
-         `${pathname}?page=${currentPage}${
-           sortValue !== 'default' ? `&sort=${sortValue}` : ''
-         }${minPrice !== null ? `&price=${minPrice},${maxPrice}` : ''}${
-           filterData.colorValues?.length
-             ? `&color=${filterData.colorValues}`
-             : ''
-         }${
-           filterData.sizeValues?.length ? `&size=${filterData.sizeValues}` : ''
-         }
-          `,
-       )
-       setProducts(res.data)
-       setTotalPages(Math.ceil(res.data.meta.pagination.total / 12))
-     } catch (error) {
-       throw new Error('Fetch error')
-     }
-   }
-   fetchData()
- }, [memoizedDependencies])
-  
   return (
     <div
       ref={listRef}
       className='container flex flex-wrap items-center justify-center  gap-6 py-7 lg:justify-evenly'
     >
       <button
-        onClick={toggleFilterSidebar}
+        onClick={() => setFilterSidebarOpen(true)}
         type='button'
         className='flex w-[300px] items-center justify-center  rounded-2xl bg-primary-green px-10 py-3 text-center font-exo_2 text-xl font-bold text-white-dis shadow-button transition-all duration-300  hover:scale-[1.03] hover:opacity-80 focus:scale-[1.03] focus:opacity-80 max-sm:w-[250px] max-sm:text-md'
       >
         <ImEqualizer size={30} />
         <span className='ml-3'> Фільтер</span>
       </button>
-      <div className='flex w-[200px] flex-col gap-2'>
-        <Select
-          label='Сортувати'
-          variant='bordered'
-          className='max-w-xs'
-          selectedKeys={[sortValue]}
-          onChange={handleSelectionChangeSortValue}
-        >
-          {sortValues.map(item => (
-            <SelectItem key={item.value} value={item.value}>
-              {item.label}
-            </SelectItem>
-          ))}
-        </Select>
-      </div>
+      {productsData.data.length > 0 && (
+        <div className='flex w-[200px] flex-col gap-2'>
+          <Select
+            label='Сортувати'
+            variant='bordered'
+            className='max-w-xs'
+            selectedKeys={[sortValue]}
+            onChange={handleSelectionChangeSortValue}
+          >
+            {sortValues.map(item => (
+              <SelectItem key={item.value} value={item.value}>
+                {item.label}
+              </SelectItem>
+            ))}
+          </Select>
+        </div>
+      )}
       {totalPages > 1 && (
         <Pagination
           showControls
@@ -215,18 +189,24 @@ const Toolbar: React.FC<ToolbarProps> = ({
               'bg-primary-green shadow-box text-white-dis font-exo_2 text-lg font-bold transition-color',
           }}
           total={totalPages}
-          page={currentPage}
-          onChange={handlePageChange}
+          page={Number(pageValue)}
+          onChange={setPageValue}
         />
       )}
       {filterSidebarOpen && (
         <AnimatePresence>
           <FilterSidebar
-            filterData={filterData}
-            filterPriceValues={[minPrice, maxPrice]}
             filterStartData={filterStartData}
             toggleFilterSidebar={toggleFilterSidebar}
-            setFilterData={setFilterData}
+            handleChangePriceFilterValue={handleChangePriceFilterValue}
+            handleChangeColorFilterValue={handleChangeColorFilterValue}
+            handleChangeSizeFilterValue={handleChangeSizeFilterValue}
+            setPriceValueParams={setPriceValueParams}
+            setColorValueParams={setColorValueParams}
+            setSizeValueParams={setSizeValueParams}
+            priceValueParamsArr={priceValueParamsArr}
+            colorValueParamsArr={colorValueParamsArr}
+            sizeValueParamsArr={sizeValueParamsArr}
           />
         </AnimatePresence>
       )}

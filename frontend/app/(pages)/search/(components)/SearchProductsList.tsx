@@ -1,12 +1,10 @@
 'use client'
 
 import { Rating } from '@smastrom/react-rating'
-import { AnimatePresence, motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import { FaHeart, FaRegHeart } from 'react-icons/fa'
-
 import EmptySection from '@/app/(components)/EmptySection'
 import type { ProductItem } from '@/app/(components)/ProductsSection/ProductsList'
 import {
@@ -15,8 +13,20 @@ import {
 } from '@/app/(redux)/favorites/favoritesSlice'
 import { selectFavoritesProducts } from '@/app/(redux)/favorites/selectors'
 import { useAppDispatch, useAppSelector } from '@/app/(redux)/hooks'
-
-const FavoriteProductsList = () => {
+import { AnimatePresence, motion } from 'framer-motion'
+interface SearchProductsListProps {
+  productsData: {
+    data: ProductItem[]
+    meta: {
+      pagination: {
+        total: number
+      }
+    }
+  }
+}
+const SearchProductsList: React.FC<SearchProductsListProps> = ({
+  productsData,
+}) => {
   const dispatch = useAppDispatch()
   const favoritesProducts = useAppSelector(selectFavoritesProducts)
   const handleAddToFavorites = (product: ProductItem) => {
@@ -26,13 +36,13 @@ const FavoriteProductsList = () => {
   const handleRemoveFromFavorites = (productId: number) => {
     dispatch(removeFavoritesList({ id: productId }))
   }
-  return favoritesProducts.length === 0 ? (
+  return productsData.data.length === 0 ? (
     <EmptySection />
   ) : (
     <section className='py-14'>
       <div className='container'>
         <ul className=' flex flex-wrap items-center justify-center gap-6'>
-          {favoritesProducts.map(item => {
+          {productsData.data.map(item => {
             const isFavorite = favoritesProducts.some(
               favorite => favorite.id === item.id,
             )
@@ -157,4 +167,4 @@ const FavoriteProductsList = () => {
   )
 }
 
-export default FavoriteProductsList
+export default SearchProductsList

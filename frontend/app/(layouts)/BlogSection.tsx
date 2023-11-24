@@ -26,12 +26,9 @@ const BlogSection = () => {
                 width='1920'
                 height='800'
                 className='h-auto max-w-[600px] object-cover object-center shadow-box max-md:w-full'
+                priority
               />
-              <h3
-                className='max-w-[600px] overflow-hidden text-ellipsis text-lg font-bold '
-                overflow-hidden
-                text-ellipsis
-              >
+              <h3 className='max-w-[600px] overflow-hidden text-ellipsis text-lg font-bold '>
                 Bag Trends for Summer 2023
               </h3>
               <div className='flex gap-2'>
@@ -62,6 +59,7 @@ const BlogSection = () => {
                 width='1920'
                 height='800'
                 className='h-auto max-w-[600px] overflow-hidden text-ellipsis object-cover object-center shadow-box max-md:w-full'
+                priority
               />
               <h3 className='max-w-[600px] overflow-hidden text-ellipsis text-lg font-bold'>
                 Bag Trends for Summer 2023

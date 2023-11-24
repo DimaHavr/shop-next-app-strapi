@@ -10,8 +10,6 @@ const SearchSchema = Yup.object().shape({
   query: Yup.string().required('Please enter a search query'),
 })
 
-
-
 const SearchInput = () => {
   const router = useRouter()
   return (
@@ -22,7 +20,6 @@ const SearchInput = () => {
       validationSchema={SearchSchema}
       onSubmit={values => {
         router.push(`/search?query=${values.query}`)
-        redirect('/search')
       }}
     >
       <Form>
@@ -41,9 +38,9 @@ const SearchInput = () => {
             placeholder='Знайти...'
             className='h-[35px] w-[250px] bg-white-dis p-1 pl-2 font-exo_2 text-black-dis outline-none  focus:outline-none'
           />
-          <button type='submit' className='pr-2'>
+          <button type='submit' className='pr-2' aria-label='Пошук'>
             <FaSearch
-              onClick={()=>redirect('/search')}
+              onClick={() => redirect('/search')}
               color='#17696A'
               className=' transition-opacity  hover:opacity-80 focus:opacity-80 '
               size={20}

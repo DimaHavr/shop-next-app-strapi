@@ -29,7 +29,6 @@ export const Header: React.FC = () => {
     setShowSearchBar(prev => !prev)
   }, [])
 
-
   const screenSize = useWindowSize()
   return (
     <header className='padding-lock max-md fixed left-0 top-0 z-50 flex w-full items-center  bg-footer-gradient-linear-green '>
@@ -105,7 +104,7 @@ export const Header: React.FC = () => {
               />
             </button>
           )}
-          <Link href='/favorites'>
+          <Link href='/favorites' aria-label='Улюблені товари'>
             <FaHeart
               color='#fff'
               className='transition-opacity hover:opacity-80  focus:opacity-80'
@@ -139,11 +138,7 @@ export const Header: React.FC = () => {
       </AnimatePresence>
       <AnimatePresence>{showCart && <Cart />}</AnimatePresence>
       <AnimatePresence>
-        {showSearchBar && (
-          <SearchBar
-            toggleSearchBar={toggleSearchBar}
-          />
-        )}
+        {showSearchBar && <SearchBar toggleSearchBar={toggleSearchBar} />}
       </AnimatePresence>
     </header>
   )

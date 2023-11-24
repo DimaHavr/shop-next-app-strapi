@@ -145,10 +145,12 @@ const DeliverySection = () => {
       <div className='flex flex-col'>
         <div className='flex flex-col items-center justify-center gap-4'>
           <Image
+            className='h-auto w-auto'
             src='/icons/Nova_Poshta_2014_logo.svg'
             width={150}
             height={100}
-            alt='selected-image'
+            alt='Нова пошта лого'
+            priority
           />
           <Autocomplete
             defaultItems={filteredCities}
@@ -187,10 +189,12 @@ const DeliverySection = () => {
             )}
           </Autocomplete>
           <Image
+            className='h-auto w-auto'
             src='/icons/Ukrposhta-ua.svg'
             width={180}
             height={100}
-            alt='selected-image'
+            alt='Укрпошта лого'
+            priority
           />
           <div className='flex items-center gap-2'>
             <p className='font-exo_2 text-lg font-bold'>В розробці...</p>

@@ -12,6 +12,7 @@ export const Footer = () => {
             width={1008}
             height={321}
             alt='flicker'
+            priority
           />
         </div>
         <div className='flex gap-3 transition-opacity hover:opacity-80 focus:opacity-80 '>

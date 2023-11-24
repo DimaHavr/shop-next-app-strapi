@@ -3,11 +3,9 @@
 
 import getHeaders from '@/app/(utils)/getHeaders'
 
-
 export default async function fetchData(url: string) {
   try {
     const res = await fetch(`https://shop-strapi.onrender.com/api${url}`, {
-      next: { revalidate: 60 },
       headers: getHeaders(),
     })
 

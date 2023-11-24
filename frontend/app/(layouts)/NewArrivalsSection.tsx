@@ -107,12 +107,19 @@ const NewArrivalsSection: React.FC<NewArrivalsSectionProps> = ({
                       src={imageUrl}
                       width={item.attributes.img.data[0]?.attributes.width}
                       height={item.attributes.img.data[0]?.attributes.height}
-                      alt='as'
+                      alt={item.attributes.title}
+                      priority
                     />
                     <div className='flex w-full flex-col justify-start gap-1 rounded-b-2xl bg-white-dis p-3'>
-                      <p className='flex items-baseline gap-1 text-center font-exo_2 text-lg uppercase '>
+                      <p
+                        className={`flex items-baseline gap-1 font-exo_2 ${
+                          item.attributes.discount
+                            ? 'text-[red]'
+                            : 'text-black-dis'
+                        }  text-lg uppercase`}
+                      >
                         {item.attributes.discount && (
-                          <span className='text-base text-[red] line-through'>
+                          <span className='text-base text-black-dis line-through'>
                             {oldPrice.toFixed(2)}
                           </span>
                         )}
@@ -156,6 +163,7 @@ const NewArrivalsSection: React.FC<NewArrivalsSectionProps> = ({
                           exit={{ scale: 0.8, transition: { duration: 0.3 } }}
                           type='button'
                           onClick={() => handleRemoveFromFavorites(item.id)}
+                          aria-label='Видалити з улюлених'
                         >
                           <FaHeart
                             color='#17696A'
@@ -175,6 +183,7 @@ const NewArrivalsSection: React.FC<NewArrivalsSectionProps> = ({
                           exit={{ scale: 0.8, transition: { duration: 0.3 } }}
                           type='button'
                           onClick={() => handleAddToFavorites(item)}
+                          aria-label='Додати до улюблених'
                         >
                           <FaRegHeart
                             color='#17696A'

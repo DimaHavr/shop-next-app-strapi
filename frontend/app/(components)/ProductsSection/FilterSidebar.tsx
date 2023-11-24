@@ -1,18 +1,18 @@
+'use client'
+
 import type { SliderValue } from '@nextui-org/react'
 import { Accordion, AccordionItem, Slider } from '@nextui-org/react'
 import { motion } from 'framer-motion'
 import { useCallback, useRef, useState } from 'react'
 import { MdOutlineClose } from 'react-icons/md'
+import { usePathname, useRouter } from 'next/navigation'
 
 import useCustomScrollbarLock from '@/app/(hooks)/useCustomScrollbarLock'
 
 import type { ProductItem } from './ProductsList'
-import type { IFilterData } from './Toolbar'
 
 interface FilterSidebarProps {
   toggleFilterSidebar: () => void
-  filterData: IFilterData
-  filterPriceValues: any
   filterStartData: {
     data: ProductItem[]
     meta: {
@@ -21,68 +21,92 @@ interface FilterSidebarProps {
       }
     }
   }
-  setFilterData: (value: {}) => void
+  handleChangePriceFilterValue: (prices: any) => void
+  handleChangeColorFilterValue: (colors: any) => void
+  handleChangeSizeFilterValue: (size: any) => void
+  setPriceValueParams: any
+  setColorValueParams: any
+  setSizeValueParams: any
+  priceValueParamsArr: string[] | null
+  colorValueParamsArr: string[] | []
+  sizeValueParamsArr: any
 }
 const FilterSidebar: React.FC<FilterSidebarProps> = ({
   toggleFilterSidebar,
   filterStartData,
-  setFilterData,
-  filterPriceValues,
-  filterData,
+  handleChangePriceFilterValue,
+  handleChangeColorFilterValue,
+  handleChangeSizeFilterValue,
+  setPriceValueParams,
+  setColorValueParams,
+  setSizeValueParams,
+  priceValueParamsArr,
+  colorValueParamsArr,
+  sizeValueParamsArr,
 }) => {
-  const filteredDataSizes = filterStartData.data.reduce(
-    (accumulator: any, item: any) => {
-      const { size } = item.attributes.sizes.data[0].attributes
-      if (!accumulator.includes(size)) {
-        accumulator.push(size)
-      }
-      return accumulator
-    },
-    [],
-  )
-  const filteredDataColors = filterStartData.data.reduce(
-    (accumulator: any, item: any) => {
-      const colorName: string = item.attributes.colors.data[0].attributes.name
-      const existingItems = accumulator.find(
-        (existingItem: { colorName: string }) =>
-          existingItem.colorName === colorName,
-      )
-      if (!existingItems) {
-        accumulator.push({ colorName })
-      }
-      return accumulator
-    },
-    [],
-  )
+  const router = useRouter()
+  const pathname = usePathname()
+  const FilterSidebarRef = useRef<HTMLDivElement>(null)
   const prices = filterStartData.data.map((item: any) => item.attributes.price)
   const minPrice = Math.min(...prices)
   const maxPrice = Math.max(...prices)
-  const [colorValues, setColorValues] = useState<string[]>([
-    ...(filterData.colorValues || ''),
-  ])
-  const [sizeValues, setSizeValues] = useState<string[]>([
-    ...(filterData.sizeValues || ''),
-  ])
-  const [priceValues, setPriceValues] = useState<SliderValue>([
-    ...filterPriceValues,
+  const [currentPriceValues, setCurrentPriceValues] = useState<SliderValue>(
+    priceValueParamsArr?.map(str => Number(str)) || [minPrice, maxPrice],
+  )
+
+  const filteredDataColors = filterStartData.data.reduce(
+    (accumulator: string[], item: any) => {
+      const colorNames: string[] = item.attributes.colors.data.map(
+        (color: { attributes: { name: string } }) => color.attributes.name,
+      )
+      colorNames.forEach(colorName => {
+        if (!accumulator.includes(colorName)) {
+          accumulator.push(colorName)
+        }
+      })
+
+      return accumulator
+    },
+    [],
+  )
+  const filteredDataSizes = filterStartData.data.reduce(
+    (accumulator: string[], item: any) => {
+      const sizeItem: string[] = item.attributes.sizes.data.map(
+        (size: { attributes: { size: string } }) => size.attributes.size,
+      )
+      sizeItem.forEach(sizeItem => {
+        if (!accumulator.includes(sizeItem)) {
+          accumulator.push(sizeItem)
+        }
+      })
+
+      return accumulator
+    },
+    [],
+  )
+
+  const [colorValue, setColorValue] = useState<string[]>([
+    ...colorValueParamsArr,
   ])
 
+  const [sizeValue, setSizeValue] = useState<string[]>([...sizeValueParamsArr])
+
   const handleColorClick = (colorName: string) => {
-    setColorValues((prevColors: any) => {
+    setColorValue((prevColors: any) => {
       return prevColors.includes(colorName)
         ? prevColors.filter((color: string) => color !== colorName)
         : [...prevColors, colorName]
     })
   }
+
   const handleSizeClick = (sizeItem: string) => {
-    setSizeValues((prevSizes: any) => {
+    setSizeValue((prevSizes: any) => {
       return prevSizes.includes(sizeItem)
         ? prevSizes.filter((size: string) => size !== sizeItem)
         : [...prevSizes, sizeItem]
     })
   }
 
-  const FilterSidebarRef = useRef<HTMLDivElement>(null)
   const onBackdropCloseFilterSidebar = useCallback(
     (event: { target: any; currentTarget: any }) => {
       if (event.target === event.currentTarget) {
@@ -146,8 +170,8 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                   defaultValue={[minPrice, maxPrice]}
                   maxValue={maxPrice}
                   minValue={minPrice}
-                  value={priceValues || [minPrice, maxPrice]}
-                  onChange={setPriceValues}
+                  value={currentPriceValues || [minPrice, maxPrice]}
+                  onChange={setCurrentPriceValues}
                   classNames={{
                     base: 'max-w-md gap-3',
                     labelWrapper:
@@ -175,19 +199,19 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                 }
               >
                 <ul className='mb-5 flex flex-wrap justify-center gap-2'>
-                  {filteredDataColors.map((item: { colorName: string }) => {
+                  {filteredDataColors.map((item: any) => {
                     return (
-                      <li key={item.colorName}>
+                      <li key={item}>
                         <button
                           type='button'
                           className={`${
-                            colorValues.includes(item.colorName) &&
-                            'rounded-2xl border-1  border-white-dis text-white-dis shadow-box'
+                            colorValue.includes(item) &&
+                            'rounded-2xl border-1 border-white-dis text-white-dis shadow-box'
                           }`}
-                          onClick={() => handleColorClick(item.colorName)}
+                          onClick={() => handleColorClick(item)}
                         >
                           <span className='px-3 py-2 font-exo_2 text-md text-white-dis'>
-                            {item.colorName}
+                            {item}
                           </span>
                         </button>
                       </li>
@@ -210,7 +234,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                       <li key={item}>
                         <button
                           className={`${
-                            sizeValues.includes(item) &&
+                            sizeValue.includes(item) &&
                             'rounded-2xl border-1  border-white-dis text-white-dis shadow-box'
                           }`}
                           type='button'
@@ -229,10 +253,11 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
           </div>
           <button
             onClick={() => {
-              setFilterData({
-                priceValues: [minPrice, maxPrice],
-              })
               toggleFilterSidebar()
+              setPriceValueParams('')
+              setColorValueParams([])
+              setSizeValueParams([])
+              router.push(pathname)
             }}
             type='button'
             className='mx-4 rounded-2xl bg-white-dis p-4 text-center font-exo_2 text-lg font-bold text-primary-green shadow-button transition-all duration-300 hover:scale-[1.03] hover:opacity-80  focus:scale-[1.03] focus:opacity-80 '
@@ -241,11 +266,9 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
           </button>
           <button
             onClick={() => {
-              setFilterData({
-                colorValues,
-                priceValues,
-                sizeValues: [...sizeValues],
-              })
+              handleChangePriceFilterValue(currentPriceValues)
+              handleChangeColorFilterValue(colorValue)
+              handleChangeSizeFilterValue(sizeValue)
               toggleFilterSidebar()
             }}
             type='button'

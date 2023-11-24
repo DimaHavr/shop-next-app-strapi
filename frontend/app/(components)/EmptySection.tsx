@@ -6,11 +6,12 @@ const EmptySection = () => {
     <section className='py-[30px]'>
       <div className='flex flex-col items-center justify-center '>
         <Image
-          className='h-[300px] min-w-[200px] object-cover'
+          className='h-[300px] w-auto object-cover'
           src='/icons/empty.svg'
           width={350}
           height={400}
-          alt='as'
+          alt='Кіт'
+          priority
         />
         <p className=' p-3 text-center font-exo_2 text-xl'>
           Тут поки що нічого немає...

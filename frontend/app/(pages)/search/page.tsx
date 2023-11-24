@@ -9,7 +9,19 @@ export default async function IndexPage({
 }: {
   searchParams?: { [key: string]: string | string[] | undefined }
 }) {
-  const searchUrl = `/products?populate=*&filters[title][$containsi]=${searchParams?.query}`
+  const pagesFilterValuesParams = searchParams?.pageFilter
+    ? [searchParams?.pageFilter].toString().split(',')
+    : ''
+  const pagesValuesFilterUrl =
+    Array.isArray(pagesFilterValuesParams) && pagesFilterValuesParams.length > 0
+      ? pagesFilterValuesParams
+          .map(
+            (item, index) => `&filters[page][name][$in][${index + 1}]=${item}`,
+          )
+          .join('')
+      : ''
+
+  const searchUrl = `/products?populate=*&filters[title][$containsi]=${searchParams?.query}${pagesValuesFilterUrl}`
   const searchData = await fetchData(searchUrl)
 
   const breadCrumbArr = [

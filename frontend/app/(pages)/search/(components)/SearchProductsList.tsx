@@ -39,7 +39,7 @@ const SearchProductsList: React.FC<SearchProductsListProps> = ({
   return productsData.data.length === 0 ? (
     <EmptySection />
   ) : (
-    <section className='py-14'>
+    <section className='pt-12 pb-14'>
       <div className='container'>
         <ul className=' flex flex-wrap items-center justify-center gap-6'>
           {productsData.data.map(item => {

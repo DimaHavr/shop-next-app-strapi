@@ -110,7 +110,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
       : ''
 
   const sizesFilterUrl =
-    Array.isArray(colorValueParamsArr) && sizeValueParamsArr.length > 0
+    Array.isArray(sizeValueParamsArr) && sizeValueParamsArr.length > 0
       ? `&size=${sizeValueParamsArr.map((item: any) => item)}`
       : ''
 

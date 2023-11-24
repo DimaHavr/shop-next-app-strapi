@@ -22,12 +22,6 @@ const SearchBarSection = () => {
     searchParams.get('pageFilter') || '',
   )
 
-  // useEffect(() => {
-  //   router.push(
-  //     `/search?query=${queryValue}${[pageValue && `&pageFilter=${pageValue}`]}`,
-  //   )
-  // }, [pageValue])
-
   return (
     <div className='mt-12 flex flex-col items-center justify-center gap-4'>
       <form>
@@ -67,12 +61,12 @@ const SearchBarSection = () => {
                   'rounded-2xl border-1 border-white-dis text-white-dis shadow-box'
                 }`}
                 onClick={() => {
-                  setPageValue(item.title)
                   router.push(
-                    `/search?query=${queryValue}${[
-                      pageValue && `&pageFilter=${pageValue}`,
-                    ]}`,
+                    `/search?query=${queryValue}${
+                      pageValue && ` &pageFilter=${item.title}`
+                    }`,
                   )
+                  setPageValue(item.title)
                 }}
               >
                 <span className='font-exo_2 text-md text-primary-green'>

@@ -29,9 +29,20 @@ const SearchBarSection = () => {
     )
   }, [pageValue])
 
+  const handleSubmit = (e: { preventDefault: () => void })=>{
+    e.preventDefault()
+    if (queryValue.trim().length < 2) {
+      toast.error('Введіть мінімум три символи...')
+      return
+    }
+    setPageValue('')
+    router.push(`/search?query=${queryValue}`)
+  }
+
   return (
     <div className='mt-8 flex flex-col items-center justify-center gap-4'>
-      <form className='flex h-[50px] w-[400px] gap-1 rounded-2xl border-[1px] text-mid-grey  shadow-xl max-md:w-[280px]'>
+      <form onSubmit={handleSubmit} 
+          className='flex h-[50px] w-[400px] gap-1 rounded-2xl border-[1px] text-mid-grey  shadow-xl max-md:w-[280px]'>
         <input
           type='search'
           name='query'
@@ -42,15 +53,8 @@ const SearchBarSection = () => {
           className=' h-full w-full rounded-l-2xl pl-2 font-exo_2 text-black-dis outline-none focus:outline-none'
         />
         <button
-          onClick={() => {
-            if (queryValue.trim().length < 2) {
-              toast.error('Введіть мінімум три символи...')
-              return
-            }
-            setPageValue('')
-            router.push(`/search?query=${queryValue}`)
-          }}
-          type='button'
+        
+          type='submit'
           className='pr-2'
         >
           <FaSearch

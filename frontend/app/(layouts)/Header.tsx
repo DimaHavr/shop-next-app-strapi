@@ -11,12 +11,15 @@ import SearchBar from '../(components)/SearchBar'
 import SearchInput from '../(components)/SearchInput'
 import { useWindowSize } from '../(hooks)/useWindowResize'
 import { setShowCart } from '../(redux)/cart/cartSlice'
-import { selectShowCart } from '../(redux)/cart/selectors'
+import { selectShowCart, selectTotalQuantities } from '../(redux)/cart/selectors'
 import { useAppDispatch, useAppSelector } from '../(redux)/hooks'
 import MobileMenu from './(components)/MobileMenu'
+import { selectFavoritesTotal } from '../(redux)/favorites/selectors'
 
 export const Header: React.FC = () => {
   const showCart = useAppSelector(selectShowCart)
+  const favoritesTotalProducts = useAppSelector(selectFavoritesTotal)
+  const cartTotalProducts = useAppSelector(selectTotalQuantities)
   const dispatch = useAppDispatch()
   const [showSearchBar, setShowSearchBar] = useState<boolean>(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false)
@@ -92,7 +95,7 @@ export const Header: React.FC = () => {
             </Link>
           </li>
         </ul>
-        <div className='flex items-center gap-8 max-md:gap-6 max-sm:gap-3'>
+        <div className='flex items-center gap-8 max-md:gap-8 max-sm:gap-3'>
           {screenSize.width > 767 ? (
             <SearchInput setShowSearchBar={setShowSearchBar} />
           ) : (
@@ -106,7 +109,7 @@ export const Header: React.FC = () => {
           )}
           <Link href='/favorites' aria-label='Улюблені товари'>
             <FaHeart
-              color='#fff'
+              color={`${favoritesTotalProducts > 0 ? '#c82128' : '#fff'}`}
               className='transition-opacity hover:opacity-80  focus:opacity-80'
               size={30}
             />
@@ -114,6 +117,7 @@ export const Header: React.FC = () => {
           <button
             aria-label='Кошик'
             type='button'
+            className='relative'
             onClick={() => dispatch(setShowCart(true))}
           >
             <FaOpencart
@@ -121,6 +125,7 @@ export const Header: React.FC = () => {
               className='transition-opacity hover:opacity-80  focus:opacity-80'
               size={40}
             />
+          {cartTotalProducts > 0 &&   <span className='absolute font-exo_2 text-sm font-bold top-[-9px] right-[-17px] bg-white-dis text-black-dis rounded-[50px] min-w-[20px] h-auto'>{cartTotalProducts}</span>}
           </button>
           <button
             aria-label='Меню'

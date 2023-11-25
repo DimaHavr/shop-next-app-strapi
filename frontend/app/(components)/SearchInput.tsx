@@ -15,9 +15,19 @@ const SearchInput: React.FC<SearchInputProps> = ({ setShowSearchBar }) => {
   const pathname = usePathname()
   const [queryValue, setQueryValue] = useState<string>('')
   const isSearchPage = pathname === '/search'
+  const handleSubmit = (e: { preventDefault: () => void })=>{
+    e.preventDefault()
+      if (queryValue.trim().length < 2) {
+        toast.error('Введіть мінімум три символи...')
+        return
+      }
+      router.push(`/search?query=${queryValue}`)
+      setQueryValue('')
+      setShowSearchBar(false)
+  }
 
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <motion.div
         initial={{ opacity: 0 }}
         animate={{
@@ -38,17 +48,8 @@ const SearchInput: React.FC<SearchInputProps> = ({ setShowSearchBar }) => {
           className='h-[35px] w-[250px] p-1 pl-2 font-exo_2 text-black-dis outline-none  focus:outline-none'
         />
         <button
-          type='button'
+          type='submit'
           disabled={isSearchPage}
-          onClick={() => {
-            if (queryValue.trim().length < 2) {
-              toast.error('Введіть мінімум три символи...')
-              return
-            }
-            router.push(`/search?query=${queryValue}`)
-            setQueryValue('')
-            setShowSearchBar(false)
-          }}
           className='pr-2'
           aria-label='Пошук'
         >

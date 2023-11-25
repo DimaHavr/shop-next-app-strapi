@@ -51,10 +51,10 @@ export default function RootLayout({
       lang='uk'
       className={`${inter.variable} ${manrope.variable} ${exo2.variable} ${gugi.variable} h-full`}
     >
-      <body className='h-full'>
+      <body className='h-[100dvh]'>
         <ReduxProvider>
           <Toaster />
-          <div className='flex min-h-full flex-col'>
+          <div className='flex min-h-[100dvh] flex-col justify-between'>
             <Header />
             {children}
             <Footer />

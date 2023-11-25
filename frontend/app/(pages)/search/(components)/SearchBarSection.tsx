@@ -43,7 +43,7 @@ const SearchBarSection = () => {
         />
         <button
           onClick={() => {
-            if (queryValue.trim().length <= 3) {
+            if (queryValue.trim().length < 2) {
               toast.error('Введіть мінімум три символи...')
               return
             }

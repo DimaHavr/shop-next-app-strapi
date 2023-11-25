@@ -3,9 +3,14 @@
 import { motion } from 'framer-motion'
 import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
+import toast from 'react-hot-toast'
 import { FaSearch } from 'react-icons/fa'
 
-const SearchInput = () => {
+interface SearchInputProps {
+  setShowSearchBar: (value: boolean) => void
+}
+
+const SearchInput: React.FC<SearchInputProps> = ({ setShowSearchBar }) => {
   const router = useRouter()
   const pathname = usePathname()
   const [queryValue, setQueryValue] = useState<string>('')
@@ -20,23 +25,29 @@ const SearchInput = () => {
           transition: { duration: 0.3 },
         }}
         exit={{ opacity: 0, transition: { duration: 0.3 } }}
-        className='bg-white-dis text-mid-grey flex rounded-2xl border-[1px] p-1'
+        className='flex gap-1 rounded-2xl border-[1px] bg-white-dis p-1 text-mid-grey'
       >
         <input
-          type='text'
+          type='search'
           name='query'
+          minLength={3}
           placeholder='Знайти...'
           value={queryValue}
           disabled={isSearchPage}
           onChange={e => setQueryValue(e.target.value)}
-          className='font-exo_2 text-black-dis h-[35px] w-[250px] p-1 pl-2 outline-none  focus:outline-none'
+          className='h-[35px] w-[250px] p-1 pl-2 font-exo_2 text-black-dis outline-none  focus:outline-none'
         />
         <button
           type='button'
           disabled={isSearchPage}
           onClick={() => {
+            if (queryValue.trim().length < 2) {
+              toast.error('Введіть мінімум три символи...')
+              return
+            }
             router.push(`/search?query=${queryValue}`)
             setQueryValue('')
+            setShowSearchBar(false)
           }}
           className='pr-2'
           aria-label='Пошук'

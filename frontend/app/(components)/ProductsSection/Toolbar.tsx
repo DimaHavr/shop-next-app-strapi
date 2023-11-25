@@ -36,6 +36,8 @@ export const sortValues: ISortValue[] = [
 ]
 
 interface ToolbarProps {
+  queryValue?: string
+  pageFilterValue?: string
   sizeValueParams: any
   setSizeValueParams: any
   setColorValueParams: any
@@ -66,6 +68,8 @@ interface ToolbarProps {
 }
 
 const Toolbar: React.FC<ToolbarProps> = ({
+  queryValue,
+  pageFilterValue,
   colorValueParams,
   setColorValueParams,
   totalPages,
@@ -88,6 +92,11 @@ const Toolbar: React.FC<ToolbarProps> = ({
     setFilterSidebarOpen((prev: boolean) => !prev)
   }, [])
 
+  const queryValueUrl = queryValue ? `&query=${queryValue}` : ''
+
+  const pagesFilterValueUrl = pageFilterValue
+    ? `&pageFilter=${pageFilterValue}`
+    : ''
   const priceValueParamsArr = priceValueParams
     ? priceValueParams.split(',')
     : null
@@ -134,20 +143,12 @@ const Toolbar: React.FC<ToolbarProps> = ({
 
   useEffect(() => {
     router.push(
-      `${pathname}?page=${pageValue}${
+      `${pathname}?page=${pageValue}${queryValueUrl}${pagesFilterValueUrl}${
         sortValue === 'default' ? '' : `&sort=${sortValue}`
       }${priceFiltersUrl}${colorsFilterUrl}${sizesFilterUrl}`,
     )
     router.refresh()
-  }, [
-    sortValue,
-    pageValue,
-    pathname,
-    priceFiltersUrl,
-    router,
-    colorsFilterUrl,
-    sizesFilterUrl,
-  ])
+  }, [sortValue, pageValue, priceFiltersUrl, colorsFilterUrl, sizesFilterUrl])
 
   return (
     <div

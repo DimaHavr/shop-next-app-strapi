@@ -94,7 +94,7 @@ export const Header: React.FC = () => {
         </ul>
         <div className='flex items-center gap-8 max-md:gap-6 max-sm:gap-3'>
           {screenSize.width > 767 ? (
-            <SearchInput />
+            <SearchInput setShowSearchBar={setShowSearchBar} />
           ) : (
             <button aria-label='Пошук' type='button' onClick={toggleSearchBar}>
               <FaSearch
@@ -138,7 +138,7 @@ export const Header: React.FC = () => {
       </AnimatePresence>
       <AnimatePresence>{showCart && <Cart />}</AnimatePresence>
       <AnimatePresence>
-        {showSearchBar && <SearchBar toggleSearchBar={toggleSearchBar} />}
+        {showSearchBar && <SearchBar setShowSearchBar={setShowSearchBar} />}
       </AnimatePresence>
     </header>
   )

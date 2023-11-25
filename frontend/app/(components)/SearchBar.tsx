@@ -6,19 +6,19 @@ import { useCallback, useRef } from 'react'
 import SearchInput from './SearchInput'
 
 interface SearchInputProps {
-  toggleSearchBar: () => void
+  setShowSearchBar: (value: boolean) => void
 }
 
-const SearchBar: React.FC<SearchInputProps> = ({ toggleSearchBar }) => {
+const SearchBar: React.FC<SearchInputProps> = ({ setShowSearchBar }) => {
   const SearchBarRef = useRef<HTMLDivElement>(null)
 
   const onBackdropCloseSearchBar = useCallback(
     (event: { target: any; currentTarget: any }) => {
       if (event.target === event.currentTarget) {
-        toggleSearchBar()
+        setShowSearchBar(false)
       }
     },
-    [toggleSearchBar],
+    [setShowSearchBar],
   )
 
   return (
@@ -31,7 +31,7 @@ const SearchBar: React.FC<SearchInputProps> = ({ toggleSearchBar }) => {
       className=' absolute left-0 top-[-90px] z-10 h-[100vh] w-full overflow-y-auto overflow-x-hidden '
     >
       <div className='absolute  top-[170px] z-10 flex  w-full items-center justify-center'>
-        <SearchInput />
+        <SearchInput setShowSearchBar={setShowSearchBar} />
       </div>
     </motion.div>
   )

@@ -16,5 +16,6 @@
   "useTabs": false,
   "importOrder": ["^components/(.*)$", "^[./]"],
   "importOrderSeparation": true,
-  "importOrderSortSpecifiers": true
+  "importOrderSortSpecifiers": true,
+  "plugins": ["prettier-plugin-tailwindcss"]
 }

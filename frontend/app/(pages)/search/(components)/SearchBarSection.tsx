@@ -4,6 +4,7 @@
 
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 import { FaSearch } from 'react-icons/fa'
 
 const pageValuesArr = [
@@ -24,37 +25,40 @@ const SearchBarSection = () => {
 
   useEffect(() => {
     router.push(
-      `/search?query=${queryValue}${[pageValue && `&pageFilter=${pageValue}`]}`,
+      `/search?query=${queryValue}${pageValue && `&pageFilter=${pageValue}`}`,
     )
   }, [pageValue])
 
   return (
-    <div className='mt-12 flex flex-col items-center justify-center gap-4'>
-      <form>
-        <div className='text-mid-grey flex w-[400px] rounded-2xl border-[1px] p-1 shadow-xl max-md:w-[280px]'>
-          <input
-            type='text'
-            name='query'
-            placeholder='Знайти...'
-            value={queryValue}
-            onChange={e => setQueryValue(e.target.value)}
-            className=' font-exo_2 text-black-dis h-[40px] w-full p-1 pl-2 outline-none focus:outline-none'
+    <div className='mt-8 flex flex-col items-center justify-center gap-4'>
+      <form className='flex h-[50px] w-[400px] gap-1 rounded-2xl border-[1px] text-mid-grey  shadow-xl max-md:w-[280px]'>
+        <input
+          type='search'
+          name='query'
+          minLength={3}
+          placeholder='Знайти...'
+          value={queryValue}
+          onChange={e => setQueryValue(e.target.value)}
+          className=' h-full w-full rounded-l-2xl pl-2 font-exo_2 text-black-dis outline-none focus:outline-none'
+        />
+        <button
+          onClick={() => {
+            if (queryValue.trim().length <= 3) {
+              toast.error('Введіть мінімум три символи...')
+              return
+            }
+            setPageValue('')
+            router.push(`/search?query=${queryValue}`)
+          }}
+          type='button'
+          className='pr-2'
+        >
+          <FaSearch
+            color='#17696A'
+            className=' transition-opacity  hover:opacity-80 focus:opacity-80 '
+            size={30}
           />
-          <button
-            onClick={() => {
-              setPageValue('')
-              router.push(`/search?query=${queryValue}`)
-            }}
-            type='button'
-            className='pr-2'
-          >
-            <FaSearch
-              color='#17696A'
-              className=' transition-opacity  hover:opacity-80 focus:opacity-80 '
-              size={30}
-            />
-          </button>
-        </div>
+        </button>
       </form>
       <ul className='flex flex-wrap justify-center gap-2'>
         {pageValuesArr.map((item: { title: string; slug: string }) => {
@@ -64,7 +68,7 @@ const SearchBarSection = () => {
                 type='button'
                 className={`h-[40px] w-[100px]  ${
                   pageValue === item.title &&
-                  'border-1 border-white-dis text-white-dis shadow-box rounded-2xl'
+                  'rounded-2xl border-1 border-white-dis text-white-dis shadow-box'
                 }`}
                 onClick={() => setPageValue(item.title)}
               >

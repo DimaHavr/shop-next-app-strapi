@@ -10,20 +10,67 @@ export default async function IndexPage({
 }: {
   searchParams?: { [key: string]: string | string[] | undefined }
 }) {
-  const pagesFilterValuesParams = searchParams?.pageFilter
-    ? [searchParams?.pageFilter].toString().split(',')
+  const pageFilterValue = searchParams?.pageFilter
+    ? searchParams?.pageFilter.toString()
     : ''
-  const pagesValuesFilterUrl =
-    Array.isArray(pagesFilterValuesParams) && pagesFilterValuesParams.length > 0
-      ? pagesFilterValuesParams
+  const pageValueFilterUrl = pageFilterValue
+    ? `&filters[page][name][$eq]=${pageFilterValue}`
+    : ''
+  const currentPage = Number(searchParams?.page) || 1
+  const sortLatestUrl =
+    searchParams?.sort === 'latest' ? `&sort=createdAt:desc` : ''
+  const sortLowestPriceUrl =
+    searchParams?.sort === 'lowest_price' ? `&sort=price:asc` : ''
+  const sortHighestPriceUrl =
+    searchParams?.sort === 'highest_price' ? `&sort=price:desc` : ''
+
+  const priceValueParams = searchParams?.price
+    ? [searchParams?.price].toString()
+    : ''
+
+  const colorValueParams = searchParams?.color
+    ? [searchParams?.color].toString()
+    : ''
+
+  const sizeValueParams = searchParams?.size
+    ? [searchParams?.size].toString()
+    : ''
+
+  const priceValueArr = priceValueParams?.split(',')
+  const colorValueParamsArr = colorValueParams.length
+    ? colorValueParams?.toString().split(',')
+    : []
+  const sizeValueParamsArr = sizeValueParams.length
+    ? sizeValueParams?.toString().split(',')
+    : []
+
+  const filterMinMaxPrice =
+    priceValueArr[0] !== ''
+      ? `&filters[price][$gte]=${priceValueArr[0]}&filters[price][$lte]=${priceValueArr[1]}`
+      : ''
+
+  const colorsFilterUrl =
+    Array.isArray(colorValueParamsArr) && colorValueParamsArr.length > 0
+      ? colorValueParamsArr
           .map(
-            (item, index) => `&filters[page][name][$in][${index + 1}]=${item}`,
+            (item, index) =>
+              `&filters[colors][name][$in][${index + 1}]=${item}`,
+          )
+          .join('')
+      : ''
+  const sizesFilterUrl =
+    Array.isArray(sizeValueParamsArr) && sizeValueParamsArr.length > 0
+      ? sizeValueParamsArr
+          .map(
+            (item, index) => `&filters[sizes][size][$in][${index + 1}]=${item}`,
           )
           .join('')
       : ''
 
-  const searchUrl = `/products?populate=*&filters[title][$containsi]=${searchParams?.query}${pagesValuesFilterUrl}`
+  const searchUrl = `/products?populate=*&pagination[pageSize]=12&filters[title][$containsi]=${searchParams?.query}${pageValueFilterUrl}&pagination[page]=${currentPage}${sortLatestUrl}${sortLowestPriceUrl}${sortHighestPriceUrl}${filterMinMaxPrice}${colorsFilterUrl}${sizesFilterUrl}`
+  const pageFilterUrl = `/products?populate=colors,sizes,category,subcategory,page&filters[title][$containsi]=${searchParams?.query}${pageValueFilterUrl}`
   const searchData = await fetchData(searchUrl)
+  const pageProductsFilterData = await fetchData(pageFilterUrl)
 
   const breadCrumbArr = [
     {
@@ -35,7 +82,12 @@ export default async function IndexPage({
     <main className='mt-[89px] flex-auto'>
       <Breadcrumb breadCrumbArr={breadCrumbArr} />
       <SearchBarSection />
-      <SearchProductsList productsData={searchData} />
+      <SearchProductsList
+        productsData={searchData}
+        filterStartData={pageProductsFilterData}
+        queryValue={`${searchParams?.query}`}
+        pageFilterValue={pageFilterValue}
+      />
       <SubscribeSection />
     </main>
   )

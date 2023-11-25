@@ -85,8 +85,6 @@ export default async function IndexPage({
       <SearchProductsList
         productsData={searchData}
         filterStartData={pageProductsFilterData}
-        queryValue={`${searchParams?.query}`}
-        pageFilterValue={pageFilterValue}
       />
       <SubscribeSection />
     </main>

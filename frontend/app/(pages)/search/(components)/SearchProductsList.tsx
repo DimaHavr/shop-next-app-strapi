@@ -9,8 +9,6 @@ import ProductsListItem from '@/app/(components)/ProductsSection/ProductsListIte
 import Toolbar from '@/app/(components)/ProductsSection/Toolbar'
 
 interface SearchProductsListProps {
-  queryValue: string
-  pageFilterValue: string
   filterStartData: {
     data: ProductItem[]
     meta: {
@@ -31,11 +29,16 @@ interface SearchProductsListProps {
 const SearchProductsList: React.FC<SearchProductsListProps> = ({
   filterStartData,
   productsData,
-  queryValue,
-  pageFilterValue,
 }) => {
   const searchParams = useSearchParams()
   const totalPages = Math.ceil(productsData.meta.pagination.total / 12)
+
+  const queryValue = searchParams.get('query')
+    ? searchParams.get('query')?.toString()
+    : ''
+  const pageFilterValue = searchParams.get('pageFilter')
+    ? searchParams.get('pageFilter')?.toString()
+    : ''
 
   const [pageValue, setPageValue] = useState<number>(
     Number(searchParams.get('page')) || 1,

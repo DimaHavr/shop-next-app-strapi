@@ -11,10 +11,13 @@ import SearchBar from '../(components)/SearchBar'
 import SearchInput from '../(components)/SearchInput'
 import { useWindowSize } from '../(hooks)/useWindowResize'
 import { setShowCart } from '../(redux)/cart/cartSlice'
-import { selectShowCart, selectTotalQuantities } from '../(redux)/cart/selectors'
+import {
+  selectShowCart,
+  selectTotalQuantities,
+} from '../(redux)/cart/selectors'
+import { selectFavoritesTotal } from '../(redux)/favorites/selectors'
 import { useAppDispatch, useAppSelector } from '../(redux)/hooks'
 import MobileMenu from './(components)/MobileMenu'
-import { selectFavoritesTotal } from '../(redux)/favorites/selectors'
 
 export const Header: React.FC = () => {
   const showCart = useAppSelector(selectShowCart)
@@ -125,7 +128,11 @@ export const Header: React.FC = () => {
               className='transition-opacity hover:opacity-80  focus:opacity-80'
               size={40}
             />
-          {cartTotalProducts > 0 &&   <span className='absolute font-exo_2 text-sm font-bold top-[-9px] right-[-17px] bg-white-dis text-black-dis rounded-[50px] min-w-[20px] h-auto'>{cartTotalProducts}</span>}
+            {cartTotalProducts > 0 && (
+              <span className='absolute right-[-17px] top-[-9px] h-auto min-w-[20px] rounded-[50px] bg-white-dis font-exo_2 text-sm font-bold text-black-dis'>
+                {cartTotalProducts}
+              </span>
+            )}
           </button>
           <button
             aria-label='Меню'

@@ -29,7 +29,7 @@ const SearchBarSection = () => {
     )
   }, [pageValue])
 
-  const handleSubmit = (e: { preventDefault: () => void })=>{
+  const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault()
     if (queryValue.trim().length < 2) {
       toast.error('Введіть мінімум три символи...')
@@ -41,8 +41,10 @@ const SearchBarSection = () => {
 
   return (
     <div className='mt-8 flex flex-col items-center justify-center gap-4'>
-      <form onSubmit={handleSubmit} 
-          className='flex h-[50px] w-[400px] gap-1 rounded-2xl border-[1px] text-mid-grey  shadow-xl max-md:w-[280px]'>
+      <form
+        onSubmit={handleSubmit}
+        className='flex h-[50px] w-[400px] gap-1 rounded-2xl border-[1px] text-mid-grey  shadow-xl max-md:w-[280px]'
+      >
         <input
           type='search'
           name='query'
@@ -52,11 +54,7 @@ const SearchBarSection = () => {
           onChange={e => setQueryValue(e.target.value)}
           className=' h-full w-full rounded-l-2xl pl-2 font-exo_2 text-black-dis outline-none focus:outline-none'
         />
-        <button
-        
-          type='submit'
-          className='pr-2'
-        >
+        <button type='submit' className='pr-2'>
           <FaSearch
             color='#17696A'
             className=' transition-opacity  hover:opacity-80 focus:opacity-80 '

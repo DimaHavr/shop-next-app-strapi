@@ -15,15 +15,15 @@ const SearchInput: React.FC<SearchInputProps> = ({ setShowSearchBar }) => {
   const pathname = usePathname()
   const [queryValue, setQueryValue] = useState<string>('')
   const isSearchPage = pathname === '/search'
-  const handleSubmit = (e: { preventDefault: () => void })=>{
+  const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault()
-      if (queryValue.trim().length < 2) {
-        toast.error('Введіть мінімум три символи...')
-        return
-      }
-      router.push(`/search?query=${queryValue}`)
-      setQueryValue('')
-      setShowSearchBar(false)
+    if (queryValue.trim().length < 2) {
+      toast.error('Введіть мінімум три символи...')
+      return
+    }
+    router.push(`/search?query=${queryValue}`)
+    setQueryValue('')
+    setShowSearchBar(false)
   }
 
   return (

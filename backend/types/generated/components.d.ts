@@ -4,10 +4,11 @@ export interface ColorColor extends Schema.Component {
   collectionName: 'components_color_colors';
   info: {
     displayName: 'color';
+    description: '';
   };
   attributes: {
-    colorName: Attribute.String;
-    colorId: Attribute.String;
+    colorName: Attribute.String & Attribute.Required;
+    colorId: Attribute.String & Attribute.Required;
     colorImg: Attribute.String;
   };
 }

@@ -723,42 +723,6 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
   };
 }
 
-export interface ApiColorColor extends Schema.CollectionType {
-  collectionName: 'colors';
-  info: {
-    singularName: 'color';
-    pluralName: 'colors';
-    displayName: 'Color';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    name: Attribute.String & Attribute.Required;
-    products: Attribute.Relation<
-      'api::color.color',
-      'manyToMany',
-      'api::product.product'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::color.color',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::color.color',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
 export interface ApiOrderOrder extends Schema.CollectionType {
   collectionName: 'orders';
   info: {
@@ -879,12 +843,7 @@ export interface ApiProductProduct extends Schema.CollectionType {
       'manyToMany',
       'api::size.size'
     >;
-    colors: Attribute.Relation<
-      'api::product.product',
-      'oneToMany',
-      'api::color.color'
-    >;
-    colors_test: Attribute.DynamicZone<['color.color']>;
+    colors: Attribute.DynamicZone<['color.color']>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1067,7 +1026,6 @@ declare module '@strapi/types' {
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'api::category.category': ApiCategoryCategory;
-      'api::color.color': ApiColorColor;
       'api::order.order': ApiOrderOrder;
       'api::page.page': ApiPagePage;
       'api::product.product': ApiProductProduct;

@@ -77,12 +77,6 @@
       "mappedBy": "products"
     },
     "colors": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::color.color",
-      "mappedBy": "product"
-    },
-    "colors_test": {
       "type": "dynamiczone",
       "components": [
         "color.color"

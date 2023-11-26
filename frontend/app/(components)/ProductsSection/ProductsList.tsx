@@ -32,13 +32,10 @@ export interface ProductItem {
       }[]
     }
     colors: {
-      data: {
-        id: number
-        attributes: {
-          name: string
-        }
-      }[]
-    }
+      id: number
+      colorName: string
+      colorId: string
+    }[]
     reviews: {
       data: {
         id: number

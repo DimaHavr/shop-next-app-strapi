@@ -1,15 +1,18 @@
 {
   "collectionName": "components_color_colors",
   "info": {
-    "displayName": "color"
+    "displayName": "color",
+    "description": ""
   },
   "options": {},
   "attributes": {
     "colorName": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "colorId": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "colorImg": {
       "type": "string"

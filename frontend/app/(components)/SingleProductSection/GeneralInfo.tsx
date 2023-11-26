@@ -24,6 +24,7 @@ import { selectFavoritesProducts } from '@/app/(redux)/favorites/selectors'
 import { useAppDispatch, useAppSelector } from '@/app/(redux)/hooks'
 
 import type { ProductItem } from '../ProductsSection/ProductsList'
+import Link from 'next/link'
 
 export interface ProductItemProps {
   productItem: ProductItem
@@ -57,7 +58,9 @@ const GeneralInfo: React.FC<ProductItemProps> = ({
     `${productItem.attributes.img.data[0]?.attributes.url}`,
   )
   const [currentSlideIndex, setCurrentSlideIndex] = useState<number>(0)
-  const [color, setColor] = useState<string>('')
+  const [color, setColor] = useState<string>(
+    productItem.attributes.colors[0]?.colorName || '',
+  )
   const [size, setSize] = useState<string>('')
 
   const [quantity, setQuantity] = useState(1)
@@ -112,7 +115,6 @@ const GeneralInfo: React.FC<ProductItemProps> = ({
       }),
     )
     setQuantity(1)
-    setColor('')
     setSize('')
   }
 
@@ -144,18 +146,6 @@ const GeneralInfo: React.FC<ProductItemProps> = ({
     pswp.init()
   }
 
-  const handleSelectionChangeColor = (
-    e: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
-    setColor(e.target.value)
-  }
-
-  const handleSelectionChangeSize = (
-    e: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
-    setSize(e.target.value)
-  }
-
   const handleImageClick = (image: string) => {
     setSelectedImage(image)
   }
@@ -172,6 +162,8 @@ const GeneralInfo: React.FC<ProductItemProps> = ({
     0,
   )
   const averageRating = totalRating / reviewQty
+  const colors = productItem.attributes.colors
+  const sizes = productItem.attributes.sizes.data
   return (
     <div className='mt-8 flex justify-between gap-8 max-lg:flex-col max-lg:justify-center'>
       <div className='relative flex max-w-[600px] flex-col items-center justify-start max-xl:max-w-full'>
@@ -243,34 +235,38 @@ const GeneralInfo: React.FC<ProductItemProps> = ({
             variant='underlined'
             className='max-w-xs'
             selectedKeys={[color]}
-            onChange={handleSelectionChangeColor}
+            defaultSelectedKeys={color}
+            onChange={e => setColor(e.target.value)}
           >
-            {productItem.attributes.colors.data.map(item => (
-              <SelectItem
-                key={item.attributes.name}
-                value={item.attributes.name}
-              >
-                {item.attributes.name}
+            {colors.map(color => (
+              <SelectItem key={color.colorName} textValue={color.colorName}>
+                <Link
+                  className='flex'
+                  href={`/${productItem.attributes.page.data.attributes.slug}/${productItem.attributes.category.data.attributes.slug}/${productItem.attributes.subcategory.data.attributes.slug}/${color.colorId}`}
+                >
+                  {color.colorName}
+                </Link>
               </SelectItem>
             ))}
           </Select>
         </div>
         <div className='flex w-full max-w-xs flex-col gap-2'>
           <Select
+            items={sizes}
             label='Виберіть розмір'
             variant='underlined'
             className='max-w-xs'
             selectedKeys={[size]}
-            onChange={handleSelectionChangeSize}
+            onChange={e => setSize(e.target.value)}
           >
-            {productItem.attributes.sizes.data.map(item => (
+            {size => (
               <SelectItem
-                key={item.attributes.size}
-                value={item.attributes.size}
+                key={size.attributes.size}
+                textValue={size.attributes.size}
               >
-                {item.attributes.size}
+                {size.attributes.size}
               </SelectItem>
-            ))}
+            )}
           </Select>
         </div>
         <div className='flex w-[130px]  justify-center gap-2 rounded border-[1px] border-b-primary-green py-[10px] text-center text-lg font-bold text-primary-green shadow-box'>

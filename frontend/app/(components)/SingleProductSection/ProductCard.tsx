@@ -18,12 +18,15 @@ import { useAppDispatch, useAppSelector } from '@/app/(redux)/hooks'
 
 import type { ProductItem } from '../ProductsSection/ProductsList'
 import { type ProductItemProps } from './GeneralInfo'
+import Link from 'next/link'
 
 const ProductCard: React.FC<ProductItemProps> = ({
   productItem,
   setActiveTab,
 }) => {
-  const [color, setColor] = useState<string>('')
+  const [color, setColor] = useState<string>(
+    productItem.attributes.colors[0]?.colorName || '',
+  )
   const [size, setSize] = useState<string>('')
   const dispatch = useAppDispatch()
   const favoritesProducts = useAppSelector(selectFavoritesProducts)
@@ -94,18 +97,8 @@ const ProductCard: React.FC<ProductItemProps> = ({
     setSize('')
   }
 
-  const handleSelectionChangeColor = (
-    e: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
-    setColor(e.target.value)
-  }
-
-  const handleSelectionChangeSize = (
-    e: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
-    setSize(e.target.value)
-  }
-
+  const colors = productItem.attributes.colors
+  const sizes = productItem.attributes.sizes.data
   return (
     <div className='relative'>
       <div className=' flex w-[360px] flex-col items-center justify-center gap-2 rounded-2xl shadow-box max-[420px]:w-[320px] max-[350px]:w-[300px] '>
@@ -137,38 +130,43 @@ const ProductCard: React.FC<ProductItemProps> = ({
           <div className='flex items-center justify-between gap-4'>
             <div className='flex w-[150px] max-w-xs flex-col gap-2 max-md:w-[130px]'>
               <Select
+                items={colors}
                 label='Виберіть колір'
                 variant='underlined'
                 className='max-w-xs'
                 selectedKeys={[color]}
-                onChange={handleSelectionChangeColor}
+                defaultSelectedKeys={color}
+                onChange={e => setColor(e.target.value)}
               >
-                {productItem.attributes.colors.data.map(item => (
-                  <SelectItem
-                    key={item.attributes.name}
-                    value={item.attributes.name}
-                  >
-                    {item.attributes.name}
+                {color => (
+                  <SelectItem key={color.colorName} textValue={color.colorName}>
+                    <Link
+                      className='flex'
+                      href={`/${productItem.attributes.page.data.attributes.slug}/${productItem.attributes.category.data.attributes.slug}/${productItem.attributes.subcategory.data.attributes.slug}/${color.colorId}`}
+                    >
+                      {color.colorName}
+                    </Link>
                   </SelectItem>
-                ))}
+                )}
               </Select>
             </div>
             <div className='flex w-[150px] max-w-xs flex-col gap-2 max-md:w-[130px]'>
               <Select
+                items={sizes}
                 label='Виберіть розмір'
                 variant='underlined'
                 className='max-w-xs'
                 selectedKeys={[size]}
-                onChange={handleSelectionChangeSize}
+                onChange={e => setSize(e.target.value)}
               >
-                {productItem.attributes.sizes.data.map(item => (
+                {size => (
                   <SelectItem
-                    key={item.attributes.size}
-                    value={item.attributes.size}
+                    key={size.attributes.size}
+                    textValue={size.attributes.size}
                   >
-                    {item.attributes.size}
+                    {size.attributes.size}
                   </SelectItem>
-                ))}
+                )}
               </Select>
             </div>
           </div>

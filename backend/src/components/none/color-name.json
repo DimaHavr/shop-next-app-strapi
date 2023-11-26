@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_none_color_names",
+  "info": {
+    "displayName": "colorName"
+  },
+  "options": {},
+  "attributes": {
+    "colorName": {
+      "type": "string"
+    },
+    "colorId": {
+      "type": "string"
+    },
+    "colorImg": {
+      "type": "string"
+    }
+  }
+}

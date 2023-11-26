@@ -867,11 +867,6 @@ export interface ApiProductProduct extends Schema.CollectionType {
       'manyToOne',
       'api::subcategory.subcategory'
     >;
-    colors: Attribute.Relation<
-      'api::product.product',
-      'manyToMany',
-      'api::color.color'
-    >;
     reviews: Attribute.Relation<
       'api::product.product',
       'oneToMany',
@@ -884,6 +879,12 @@ export interface ApiProductProduct extends Schema.CollectionType {
       'manyToMany',
       'api::size.size'
     >;
+    colors: Attribute.Relation<
+      'api::product.product',
+      'oneToMany',
+      'api::color.color'
+    >;
+    colors_test: Attribute.DynamicZone<['color.color']>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

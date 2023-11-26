@@ -1,0 +1,12 @@
+{
+  "collectionName": "components_img_articles",
+  "info": {
+    "displayName": "article"
+  },
+  "options": {},
+  "attributes": {
+    "asdas": {
+      "type": "string"
+    }
+  }
+}

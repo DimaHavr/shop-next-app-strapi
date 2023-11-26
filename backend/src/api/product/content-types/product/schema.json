@@ -58,12 +58,6 @@
       "target": "api::subcategory.subcategory",
       "inversedBy": "products"
     },
-    "colors": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::color.color",
-      "inversedBy": "products"
-    },
     "reviews": {
       "type": "relation",
       "relation": "oneToMany",
@@ -81,6 +75,18 @@
       "relation": "manyToMany",
       "target": "api::size.size",
       "mappedBy": "products"
+    },
+    "colors": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::color.color",
+      "mappedBy": "product"
+    },
+    "colors_test": {
+      "type": "dynamiczone",
+      "components": [
+        "color.color"
+      ]
     }
   }
 }

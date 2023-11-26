@@ -58,7 +58,7 @@ const ProductsListItem: React.FC<ProductsListItemProps> = ({ item }) => {
           alt='as'
         />
         <div className='flex w-full flex-col justify-start gap-2 rounded-b-2xl bg-white-dis p-2'>
-          <h3 className='line-clamp-2 text-left font-exo_2 text-md font-semibold text-black-dis '>
+          <h3 className='line-clamp-2 h-[54px]  text-left font-exo_2 text-md font-semibold text-black-dis '>
             {item.attributes.title}
           </h3>
           <p

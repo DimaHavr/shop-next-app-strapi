@@ -9,6 +9,7 @@ import { Accordion, AccordionItem, Select, SelectItem } from '@nextui-org/react'
 import { Rating } from '@smastrom/react-rating'
 import { AnimatePresence, motion } from 'framer-motion'
 import Image from 'next/image'
+import Link from 'next/link'
 import PhotoSwipe from 'photoswipe'
 import React, { useState } from 'react'
 import { toast } from 'react-hot-toast'
@@ -24,7 +25,6 @@ import { selectFavoritesProducts } from '@/app/(redux)/favorites/selectors'
 import { useAppDispatch, useAppSelector } from '@/app/(redux)/hooks'
 
 import type { ProductItem } from '../ProductsSection/ProductsList'
-import Link from 'next/link'
 
 export interface ProductItemProps {
   productItem: ProductItem
@@ -162,7 +162,7 @@ const GeneralInfo: React.FC<ProductItemProps> = ({
     0,
   )
   const averageRating = totalRating / reviewQty
-  const colors = productItem.attributes.colors
+  const { colors } = productItem.attributes
   const sizes = productItem.attributes.sizes.data
   return (
     <div className='mt-8 flex justify-between gap-8 max-lg:flex-col max-lg:justify-center'>
@@ -231,6 +231,7 @@ const GeneralInfo: React.FC<ProductItemProps> = ({
         </div>
         <div className='flex w-full max-w-xs flex-col gap-2'>
           <Select
+            items={colors}
             label='Виберіть колір'
             variant='underlined'
             className='max-w-xs'
@@ -238,16 +239,19 @@ const GeneralInfo: React.FC<ProductItemProps> = ({
             defaultSelectedKeys={color}
             onChange={e => setColor(e.target.value)}
           >
-            {colors.map(color => (
-              <SelectItem key={color.colorName} textValue={color.colorName}>
+            {colorItem => (
+              <SelectItem
+                key={colorItem.colorName}
+                textValue={colorItem.colorName}
+              >
                 <Link
                   className='flex'
-                  href={`/${productItem.attributes.page.data.attributes.slug}/${productItem.attributes.category.data.attributes.slug}/${productItem.attributes.subcategory.data.attributes.slug}/${color.colorId}`}
+                  href={`/${productItem.attributes.page.data.attributes.slug}/${productItem.attributes.category.data.attributes.slug}/${productItem.attributes.subcategory.data.attributes.slug}/${colorItem.colorId}`}
                 >
-                  {color.colorName}
+                  {colorItem.colorName}
                 </Link>
               </SelectItem>
-            ))}
+            )}
           </Select>
         </div>
         <div className='flex w-full max-w-xs flex-col gap-2'>
@@ -259,12 +263,12 @@ const GeneralInfo: React.FC<ProductItemProps> = ({
             selectedKeys={[size]}
             onChange={e => setSize(e.target.value)}
           >
-            {size => (
+            {sizeItem => (
               <SelectItem
-                key={size.attributes.size}
-                textValue={size.attributes.size}
+                key={sizeItem.attributes.size}
+                textValue={sizeItem.attributes.size}
               >
-                {size.attributes.size}
+                {sizeItem.attributes.size}
               </SelectItem>
             )}
           </Select>

@@ -125,7 +125,7 @@ const NewArrivalsSection: React.FC<NewArrivalsSectionProps> = ({
                         )}
                         {item.attributes.price} uah
                       </p>
-                      <h3 className='line-clamp-2 text-left font-exo_2 text-md font-semibold text-black-dis '>
+                      <h3 className='line-clamp-2 h-[54px]  text-left font-exo_2 text-md font-semibold text-black-dis '>
                         {item.attributes.title}
                       </h3>
 

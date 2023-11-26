@@ -4,6 +4,7 @@ import { Select, SelectItem } from '@nextui-org/react'
 import { Rating } from '@smastrom/react-rating'
 import { AnimatePresence, motion } from 'framer-motion'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useState } from 'react'
 import { toast } from 'react-hot-toast'
 import { FaHeart, FaRegHeart } from 'react-icons/fa'
@@ -18,7 +19,6 @@ import { useAppDispatch, useAppSelector } from '@/app/(redux)/hooks'
 
 import type { ProductItem } from '../ProductsSection/ProductsList'
 import { type ProductItemProps } from './GeneralInfo'
-import Link from 'next/link'
 
 const ProductCard: React.FC<ProductItemProps> = ({
   productItem,
@@ -97,7 +97,7 @@ const ProductCard: React.FC<ProductItemProps> = ({
     setSize('')
   }
 
-  const colors = productItem.attributes.colors
+  const { colors } = productItem.attributes
   const sizes = productItem.attributes.sizes.data
   return (
     <div className='relative'>
@@ -138,13 +138,16 @@ const ProductCard: React.FC<ProductItemProps> = ({
                 defaultSelectedKeys={color}
                 onChange={e => setColor(e.target.value)}
               >
-                {color => (
-                  <SelectItem key={color.colorName} textValue={color.colorName}>
+                {colorItem => (
+                  <SelectItem
+                    key={colorItem.colorName}
+                    textValue={colorItem.colorName}
+                  >
                     <Link
                       className='flex'
-                      href={`/${productItem.attributes.page.data.attributes.slug}/${productItem.attributes.category.data.attributes.slug}/${productItem.attributes.subcategory.data.attributes.slug}/${color.colorId}`}
+                      href={`/${productItem.attributes.page.data.attributes.slug}/${productItem.attributes.category.data.attributes.slug}/${productItem.attributes.subcategory.data.attributes.slug}/${colorItem.colorId}`}
                     >
-                      {color.colorName}
+                      {colorItem.colorName}
                     </Link>
                   </SelectItem>
                 )}
@@ -159,12 +162,12 @@ const ProductCard: React.FC<ProductItemProps> = ({
                 selectedKeys={[size]}
                 onChange={e => setSize(e.target.value)}
               >
-                {size => (
+                {sizeItem => (
                   <SelectItem
-                    key={size.attributes.size}
-                    textValue={size.attributes.size}
+                    key={sizeItem.attributes.size}
+                    textValue={sizeItem.attributes.size}
                   >
-                    {size.attributes.size}
+                    {sizeItem.attributes.size}
                   </SelectItem>
                 )}
               </Select>

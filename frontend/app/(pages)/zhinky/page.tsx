@@ -47,7 +47,7 @@ export default async function IndexPage({
       ? colorValueParamsArr
           .map(
             (item, index) =>
-              `&filters[colors][name][$in][${index + 1}]=${item}`,
+              `&filters[colors][colorName][$in][${index + 1}]=${item}`,
           )
           .join('')
       : ''

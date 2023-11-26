@@ -56,8 +56,8 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
   const filteredDataColors = filterStartData.data.reduce(
     (accumulator: string[], item: any) => {
-      const colorNames: string[] = item.attributes.colors.data.map(
-        (color: { attributes: { name: string } }) => color.attributes.name,
+      const colorNames: string[] = item.attributes.colors.map(
+        (color: { colorName: string }) => color.colorName,
       )
       colorNames.forEach(colorName => {
         if (!accumulator.includes(colorName)) {

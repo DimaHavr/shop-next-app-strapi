@@ -843,7 +843,7 @@ export interface ApiProductProduct extends Schema.CollectionType {
       'manyToMany',
       'api::size.size'
     >;
-    colors: Attribute.DynamicZone<['color.color']>;
+    colors: Attribute.Component<'color.colors', true>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

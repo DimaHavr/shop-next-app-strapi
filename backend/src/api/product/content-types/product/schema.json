@@ -77,10 +77,10 @@
       "mappedBy": "products"
     },
     "colors": {
-      "type": "dynamiczone",
-      "components": [
-        "color.color"
-      ]
+      "displayName": "colors",
+      "type": "component",
+      "repeatable": true,
+      "component": "color.colors"
     }
   }
 }

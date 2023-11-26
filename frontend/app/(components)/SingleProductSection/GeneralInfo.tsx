@@ -7,7 +7,6 @@ import 'photoswipe/style.css'
 
 import { Accordion, AccordionItem, Select, SelectItem } from '@nextui-org/react'
 import { Rating } from '@smastrom/react-rating'
-import { AnimatePresence, motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import PhotoSwipe from 'photoswipe'
@@ -61,7 +60,9 @@ const GeneralInfo: React.FC<ProductItemProps> = ({
   const [color, setColor] = useState<string>(
     productItem.attributes.colors[0]?.colorName || '',
   )
-  const [size, setSize] = useState<string>('')
+  const [size, setSize] = useState<string>(
+    productItem.attributes.sizes.data[0]?.attributes.size || '',
+  )
 
   const [quantity, setQuantity] = useState(1)
   const dispatch = useAppDispatch()
@@ -161,6 +162,18 @@ const GeneralInfo: React.FC<ProductItemProps> = ({
     (acc, rating) => acc + rating.attributes.rating,
     0,
   )
+
+  const handleSelectionColorChange = (
+    e: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    setColor(e.target.value)
+  }
+  const handleSelectionSizeChange = (
+    e: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    setSize(e.target.value)
+  }
+
   const averageRating = totalRating / reviewQty
   const { colors } = productItem.attributes
   const sizes = productItem.attributes.sizes.data
@@ -231,47 +244,48 @@ const GeneralInfo: React.FC<ProductItemProps> = ({
         </div>
         <div className='flex w-full max-w-xs flex-col gap-2'>
           <Select
-            items={colors}
             label='Виберіть колір'
             variant='underlined'
             className='max-w-xs'
             selectedKeys={[color]}
-            defaultSelectedKeys={color}
-            onChange={e => setColor(e.target.value)}
+            defaultSelectedKeys={[color]}
+            onChange={handleSelectionColorChange}
           >
-            {colorItem => (
+            {colors.map(colorItem => (
               <SelectItem
                 key={colorItem.colorName}
+                value={colorItem.colorName}
                 textValue={colorItem.colorName}
+                className='m-0 p-0 pr-2'
               >
                 <Link
                   scroll={false}
-                  className='flex'
+                  className='flex p-2'
                   href={`/${productItem.attributes.page.data.attributes.slug}/${productItem.attributes.category.data.attributes.slug}/${productItem.attributes.subcategory.data.attributes.slug}/${colorItem.colorId}`}
                 >
                   {colorItem.colorName}
                 </Link>
               </SelectItem>
-            )}
+            ))}
           </Select>
         </div>
         <div className='flex w-full max-w-xs flex-col gap-2'>
           <Select
-            items={sizes}
             label='Виберіть розмір'
             variant='underlined'
             className='max-w-xs'
             selectedKeys={[size]}
-            onChange={e => setSize(e.target.value)}
+            onChange={handleSelectionSizeChange}
           >
-            {sizeItem => (
+            {sizes.map(sizeItem => (
               <SelectItem
                 key={sizeItem.attributes.size}
+                value={sizeItem.attributes.size}
                 textValue={sizeItem.attributes.size}
               >
                 {sizeItem.attributes.size}
               </SelectItem>
-            )}
+            ))}
           </Select>
         </div>
         <div className='flex w-[130px]  justify-center gap-2 rounded border-[1px] border-b-primary-green py-[10px] text-center text-lg font-bold text-primary-green shadow-box'>
@@ -299,63 +313,37 @@ const GeneralInfo: React.FC<ProductItemProps> = ({
           </button>
           <div className=' flex items-center justify-center'>
             {isFavorite ? (
-              <AnimatePresence>
-                <motion.button
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  animate={{
-                    scale: 1.1,
-                    opacity: 1,
-                    transition: { duration: 0.3 },
-                  }}
-                  exit={{
-                    scale: 0.8,
-                    opacity: 0,
-                    transition: { duration: 0.3 },
-                  }}
-                  type='button'
-                  onClick={() => handleRemoveFromFavorites(productItem.id)}
-                  className='flex items-center justify-center gap-2'
-                  aria-label='Видалити з улюлених'
-                >
-                  <p className='font-exo_2 text-lg font-bold'>
-                    Видалити з улюлених
-                  </p>
-                  <FaHeart
-                    color='#17696A'
-                    className='transition-all  duration-300 hover:scale-[1.03] hover:opacity-80 focus:scale-[1.03] focus:opacity-80'
-                    size={30}
-                  />
-                </motion.button>
-              </AnimatePresence>
+              <button
+                type='button'
+                onClick={() => handleRemoveFromFavorites(productItem.id)}
+                className='flex items-center justify-center gap-2'
+                aria-label='Видалити з улюлених'
+              >
+                <p className='font-exo_2 text-lg font-bold'>
+                  Видалити з улюлених
+                </p>
+                <FaHeart
+                  color='#17696A'
+                  className='transition-all  duration-300 hover:scale-[1.03] hover:opacity-80 focus:scale-[1.03] focus:opacity-80'
+                  size={30}
+                />
+              </button>
             ) : (
-              <AnimatePresence>
-                <motion.button
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  animate={{
-                    scale: 1.1,
-                    opacity: 1,
-                    transition: { duration: 0.3 },
-                  }}
-                  exit={{
-                    scale: 0.8,
-                    opacity: 0,
-                    transition: { duration: 0.3 },
-                  }}
-                  type='button'
-                  onClick={() => handleAddToFavorites(productItem)}
-                  className='flex items-center justify-center gap-2'
-                  aria-label='Додати до улюблених'
-                >
-                  <p className='font-exo_2 text-lg font-bold'>
-                    Додати в улюблене
-                  </p>
-                  <FaRegHeart
-                    color='#17696A'
-                    className='transition-all  duration-300 hover:scale-[1.03] hover:opacity-80 focus:scale-[1.03] focus:opacity-80'
-                    size={30}
-                  />
-                </motion.button>
-              </AnimatePresence>
+              <button
+                type='button'
+                onClick={() => handleAddToFavorites(productItem)}
+                className='flex items-center justify-center gap-2'
+                aria-label='Додати до улюблених'
+              >
+                <p className='font-exo_2 text-lg font-bold'>
+                  Додати в улюблене
+                </p>
+                <FaRegHeart
+                  color='#17696A'
+                  className='transition-all  duration-300 hover:scale-[1.03] hover:opacity-80 focus:scale-[1.03] focus:opacity-80'
+                  size={30}
+                />
+              </button>
             )}
           </div>
         </div>

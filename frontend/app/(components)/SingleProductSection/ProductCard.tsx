@@ -27,7 +27,9 @@ const ProductCard: React.FC<ProductItemProps> = ({
   const [color, setColor] = useState<string>(
     productItem.attributes.colors[0]?.colorName || '',
   )
-  const [size, setSize] = useState<string>('')
+  const [size, setSize] = useState<string>(
+    productItem.attributes.sizes.data[0]?.attributes.size || '',
+  )
   const dispatch = useAppDispatch()
   const favoritesProducts = useAppSelector(selectFavoritesProducts)
   const isFavorite = favoritesProducts.some(
@@ -97,6 +99,17 @@ const ProductCard: React.FC<ProductItemProps> = ({
     setSize('')
   }
 
+  const handleSelectionColorChange = (
+    e: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    setColor(e.target.value)
+  }
+  const handleSelectionSizeChange = (
+    e: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    setSize(e.target.value)
+  }
+
   const { colors } = productItem.attributes
   const sizes = productItem.attributes.sizes.data
   return (
@@ -130,46 +143,48 @@ const ProductCard: React.FC<ProductItemProps> = ({
           <div className='flex items-center justify-between gap-4'>
             <div className='flex w-[150px] max-w-xs flex-col gap-2 max-md:w-[130px]'>
               <Select
-                items={colors}
                 label='Виберіть колір'
                 variant='underlined'
                 className='max-w-xs'
                 selectedKeys={[color]}
                 defaultSelectedKeys={color}
-                onChange={e => setColor(e.target.value)}
+                onChange={handleSelectionColorChange}
               >
-                {colorItem => (
+                {colors.map(colorItem => (
                   <SelectItem
                     key={colorItem.colorName}
+                    value={colorItem.colorName}
                     textValue={colorItem.colorName}
+                    className='m-0 p-0 pr-2'
                   >
                     <Link
-                      className='flex'
+                      scroll={false}
+                      className='flex p-2'
                       href={`/${productItem.attributes.page.data.attributes.slug}/${productItem.attributes.category.data.attributes.slug}/${productItem.attributes.subcategory.data.attributes.slug}/${colorItem.colorId}`}
                     >
                       {colorItem.colorName}
                     </Link>
                   </SelectItem>
-                )}
+                ))}
               </Select>
             </div>
             <div className='flex w-[150px] max-w-xs flex-col gap-2 max-md:w-[130px]'>
               <Select
-                items={sizes}
                 label='Виберіть розмір'
                 variant='underlined'
                 className='max-w-xs'
                 selectedKeys={[size]}
-                onChange={e => setSize(e.target.value)}
+                onChange={handleSelectionSizeChange}
               >
-                {sizeItem => (
+                {sizes.map(sizeItem => (
                   <SelectItem
                     key={sizeItem.attributes.size}
+                    value={sizeItem.attributes.size}
                     textValue={sizeItem.attributes.size}
                   >
                     {sizeItem.attributes.size}
                   </SelectItem>
-                )}
+                ))}
               </Select>
             </div>
           </div>

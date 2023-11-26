@@ -166,12 +166,12 @@ const GeneralInfo: React.FC<ProductItemProps> = ({
   const sizes = productItem.attributes.sizes.data
   return (
     <div className='mt-8 flex justify-between gap-8 max-lg:flex-col max-lg:justify-center'>
-      <div className='relative flex max-w-[600px] flex-col items-center justify-start max-xl:max-w-full'>
+      <div className='relative flex h-[600px] max-w-[600px] flex-col items-center justify-start max-xl:max-w-full max-md:h-[400px]'>
         {selectedImage && (
           <Image
             className={`${
               productItem.attributes.img.data.length > 1 && 'rounded-b-2xl'
-            } h-auto min-w-[600px]   cursor-pointer object-contain shadow-xl max-xl:max-w-full max-lg:min-w-full max-lg:max-w-full`}
+            } h-[600px] min-w-[600px] cursor-pointer object-cover shadow-xl max-xl:max-w-full max-lg:min-w-full max-lg:max-w-full max-md:h-[400px]`}
             src={selectedImage}
             width={500}
             height={600}
@@ -192,7 +192,7 @@ const GeneralInfo: React.FC<ProductItemProps> = ({
                 }}
               >
                 <Image
-                  className='h-auto min-w-[100px] cursor-pointer'
+                  className='h-[150px] min-w-[100px] cursor-pointer object-cover max-md:h-[100px]'
                   src={item.attributes.url}
                   width={230}
                   height={340}
@@ -245,6 +245,7 @@ const GeneralInfo: React.FC<ProductItemProps> = ({
                 textValue={colorItem.colorName}
               >
                 <Link
+                  scroll={false}
                   className='flex'
                   href={`/${productItem.attributes.page.data.attributes.slug}/${productItem.attributes.category.data.attributes.slug}/${productItem.attributes.subcategory.data.attributes.slug}/${colorItem.colorId}`}
                 >

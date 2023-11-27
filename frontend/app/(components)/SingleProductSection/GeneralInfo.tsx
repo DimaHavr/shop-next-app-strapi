@@ -116,7 +116,6 @@ const GeneralInfo: React.FC<ProductItemProps> = ({
       }),
     )
     setQuantity(1)
-    setSize('')
   }
 
   const incQty = () => {
@@ -318,9 +317,10 @@ const GeneralInfo: React.FC<ProductItemProps> = ({
             disabled={!sizes.length}
             onClick={handleAddToCart}
             type='button'
-            className={`w-[300px] rounded-2xl bg-primary-green/60 px-10 py-4 text-center font-exo_2 text-lg font-bold text-white-dis shadow-button transition-all duration-300 ${
-              sizes.length &&
-              ' bg-primary-green/100 hover:scale-[1.03] hover:opacity-80 focus:scale-[1.03] focus:opacity-80'
+            className={`w-[300px] rounded-2xl  px-10 py-4 text-center font-exo_2 text-lg font-bold text-white-dis shadow-button transition-all duration-300 ${
+              !sizes.length
+                ? 'bg-primary-green/60'
+                : ' bg-primary-green/100 hover:scale-[1.03] hover:opacity-80 focus:scale-[1.03] focus:opacity-80'
             }  max-md:w-full`}
           >
             Купити

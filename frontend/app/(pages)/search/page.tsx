@@ -23,7 +23,10 @@ export default async function IndexPage({
     searchParams?.sort === 'lowest_price' ? `&sort=price:asc` : ''
   const sortHighestPriceUrl =
     searchParams?.sort === 'highest_price' ? `&sort=price:desc` : ''
-
+  const sortDefaultUrl =
+    !sortLatestUrl && !sortLowestPriceUrl && !sortHighestPriceUrl
+      ? '&sort=title'
+      : ''
   const priceValueParams = searchParams?.price
     ? [searchParams?.price].toString()
     : ''
@@ -54,7 +57,7 @@ export default async function IndexPage({
       ? colorValueParamsArr
           .map(
             (item, index) =>
-              `&filters[colors][name][$in][${index + 1}]=${item}`,
+              `&filters[title][$containsi][${index + 1}]=${item}`,
           )
           .join('')
       : ''
@@ -67,7 +70,7 @@ export default async function IndexPage({
           .join('')
       : ''
 
-  const searchUrl = `/products?populate=*&pagination[pageSize]=12&filters[title][$containsi]=${searchParams?.query}${pageValueFilterUrl}&pagination[page]=${currentPage}${sortLatestUrl}${sortLowestPriceUrl}${sortHighestPriceUrl}${filterMinMaxPrice}${colorsFilterUrl}${sizesFilterUrl}`
+  const searchUrl = `/products?populate=*&pagination[pageSize]=12&filters[title][$containsi]=${searchParams?.query}${pageValueFilterUrl}&pagination[page]=${currentPage}${sortDefaultUrl}${sortLatestUrl}${sortLowestPriceUrl}${sortHighestPriceUrl}${filterMinMaxPrice}${colorsFilterUrl}${sizesFilterUrl}`
   const pageFilterUrl = `/products?populate=colors,sizes,category,subcategory,page&filters[title][$containsi]=${searchParams?.query}${pageValueFilterUrl}`
   const searchData = await fetchData(searchUrl)
   const pageProductsFilterData = await fetchData(pageFilterUrl)

@@ -54,7 +54,6 @@ export default async function IndexPage({
           )
           .join('')
       : ''
-
   const sizesFilterUrl =
     Array.isArray(sizeValueParamsArr) && sizeValueParamsArr.length > 0
       ? sizeValueParamsArr

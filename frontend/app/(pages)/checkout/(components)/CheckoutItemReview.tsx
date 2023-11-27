@@ -70,7 +70,7 @@ const CheckoutItemReview: React.FC<CheckoutItemProps> = ({
                     <p className=' font-exo_2 text-md  '>Колір: {item.color}</p>
                     <p className=' font-exo_2 text-md  '>Розмір: {item.size}</p>
                     <div className='flex items-center gap-6'>
-                      <div className='flex w-[100px]  justify-center gap-2 rounded   py-[5px] text-center text-lg font-bold  shadow-box'>
+                      <div className='flex w-[100px]  justify-center gap-2 rounded-2xl   py-[5px] text-center text-lg font-bold  shadow-box'>
                         <button
                           onClick={() =>
                             dispatch(

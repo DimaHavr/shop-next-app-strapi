@@ -43,10 +43,10 @@ export default async function IndexPage({ params }: IndexPageProps) {
     </main>
   )
 }
-export async function generateStaticParams() {
-  const url = `/products?populate=category,subcategory`
-  const products = await fetchData(url)
-  return products.data.map((item: { attributes: any; id: number }) => ({
-    id: item.id.toString(),
-  }))
-}
+// export async function generateStaticParams() {
+//   const url = `/products?populate=category,subcategory`
+//   const products = await fetchData(url)
+//   return products.data.map((item: { attributes: any; id: number }) => ({
+//     id: item.id.toString(),
+//   }))
+// }

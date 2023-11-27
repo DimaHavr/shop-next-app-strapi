@@ -51,7 +51,7 @@ export default async function IndexPage({
       ? colorValueParamsArr
           .map(
             (item, index) =>
-              `&filters[colors][name][$in][${index + 1}]=${item}`,
+              `&filters[colors][colorName][$in][${index + 1}]=${item}`,
           )
           .join('')
       : ''
@@ -64,7 +64,7 @@ export default async function IndexPage({
           .join('')
       : ''
 
-  const categoryProductsUrl = `/products?populate=*&[filters][category][slug][$eq]=${params.category}&pagination[pageSize]=12&pagination[page]=${currentPage}${sortLatestUrl}${sortLowestPriceUrl}${sortHighestPriceUrl}${filterMinMaxPrice}${colorsFilterUrl}${sizesFilterUrl}`
+  const categoryProductsUrl = `/products?populate=*&[filters][category][slug][$eq]=${params.category}&sort=title&pagination[pageSize]=12&pagination[page]=${currentPage}${sortLatestUrl}${sortLowestPriceUrl}${sortHighestPriceUrl}${filterMinMaxPrice}${colorsFilterUrl}${sizesFilterUrl}`
   const categoryFilterProductsUrl = `/products?populate=colors,sizes,category,subcategory,page&[filters][category][slug][$eq]=${params.category}`
   const currentCategoryUrl = `/categories?populate=*&[filters][slug][$eq]=${params.category}`
   const categoriesUrl = `/categories?populate=*&[filters][page][slug][$eq]=zhinky`
@@ -96,16 +96,16 @@ export default async function IndexPage({
   )
 }
 
-export async function generateStaticParams() {
-  const url = `/categories`
-  const category = await fetchData(url)
-  return category.data.map(
-    (item: {
-      attributes: {
-        slug: string
-      }
-    }) => ({
-      category: item.attributes.slug,
-    }),
-  )
-}
+// export async function generateStaticParams() {
+//   const url = `/categories`
+//   const category = await fetchData(url)
+//   return category.data.map(
+//     (item: {
+//       attributes: {
+//         slug: string
+//       }
+//     }) => ({
+//       category: item.attributes.slug,
+//     }),
+//   )
+// }

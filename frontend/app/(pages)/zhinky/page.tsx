@@ -51,6 +51,7 @@ export default async function IndexPage({
           )
           .join('')
       : ''
+
   const sizesFilterUrl =
     Array.isArray(sizeValueParamsArr) && sizeValueParamsArr.length > 0
       ? sizeValueParamsArr
@@ -60,7 +61,7 @@ export default async function IndexPage({
           .join('')
       : ''
 
-  const pageProductsUrl = `/products?populate=*&[filters][page][slug][$eq]=zhinky&pagination[pageSize]=12&pagination[page]=${currentPage}${sortLatestUrl}${sortLowestPriceUrl}${sortHighestPriceUrl}${filterMinMaxPrice}${colorsFilterUrl}${sizesFilterUrl}`
+  const pageProductsUrl = `/products?populate=*&[filters][page][slug][$eq]=zhinky&sort=title&pagination[pageSize]=12&pagination[page]=${currentPage}${sortLatestUrl}${sortLowestPriceUrl}${sortHighestPriceUrl}${filterMinMaxPrice}${colorsFilterUrl}${sizesFilterUrl}`
   const pageFilterUrl = `/products?populate=colors,sizes,category,subcategory,page&[filters][page][slug][$eq]=zhinky`
   const pageCategoriesUrl = `/categories?populate=*&[filters][page][slug][$eq]=zhinky`
   const pageCategoriesData = await fetchData(pageCategoriesUrl)

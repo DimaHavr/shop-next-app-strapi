@@ -221,18 +221,24 @@ const GeneralInfo: React.FC<ProductItemProps> = ({
           {productItem.attributes.title}
         </h2>
         <div className='flex w-full items-start justify-between gap-4 max-md:flex-col-reverse max-md:justify-start'>
-          <p
-            className={`flex items-baseline gap-1  font-exo_2 text-lg uppercase ${
-              productItem.attributes.discount ? 'text-[red]' : 'text-black-dis'
-            }`}
-          >
-            {productItem.attributes.discount && (
-              <span className='text-base text-black-dis line-through'>
-                {oldPrice.toFixed(2)}
-              </span>
-            )}
-            {productItem.attributes.price} uah
-          </p>
+          <div className='flex items-baseline justify-center gap-2'>
+            <h3 className='font-exo_2 text-xl'>Ціна:</h3>
+            <p
+              className={`flex items-baseline gap-1  font-exo_2 text-lg uppercase ${
+                productItem.attributes.discount
+                  ? 'text-[red]'
+                  : 'text-black-dis'
+              }`}
+            >
+              {productItem.attributes.discount && (
+                <span className='text-base text-black-dis line-through'>
+                  {oldPrice.toFixed(2)}
+                </span>
+              )}
+              {productItem.attributes.price} uah
+            </p>
+          </div>
+
           <button
             type='button'
             className='flex items-center justify-center self-end'
@@ -269,26 +275,30 @@ const GeneralInfo: React.FC<ProductItemProps> = ({
             ))}
           </Select>
         </div>
-        <div className='flex w-full max-w-xs flex-col gap-2'>
-          <Select
-            label='Виберіть розмір'
-            variant='underlined'
-            className='max-w-xs'
-            selectedKeys={[size]}
-            onChange={handleSelectionSizeChange}
-          >
-            {sizes.map(sizeItem => (
-              <SelectItem
-                key={sizeItem.attributes.size}
-                value={sizeItem.attributes.size}
-                textValue={sizeItem.attributes.size}
-              >
-                {sizeItem.attributes.size}
-              </SelectItem>
-            ))}
-          </Select>
-        </div>
-        <div className='flex w-[130px]  justify-center gap-2 rounded border-[1px] border-b-primary-green py-[10px] text-center text-lg font-bold text-primary-green shadow-box'>
+        {!sizes.length ? (
+          <p className='h-[56px]'>Немає в наявності</p>
+        ) : (
+          <div className='flex w-full max-w-xs flex-col gap-2'>
+            <Select
+              label='Виберіть розмір'
+              variant='underlined'
+              className='max-w-xs'
+              selectedKeys={[size]}
+              onChange={handleSelectionSizeChange}
+            >
+              {sizes.map(sizeItem => (
+                <SelectItem
+                  key={sizeItem.attributes.size}
+                  value={sizeItem.attributes.size}
+                  textValue={sizeItem.attributes.size}
+                >
+                  {sizeItem.attributes.size}
+                </SelectItem>
+              ))}
+            </Select>
+          </div>
+        )}
+        <div className='flex w-[130px]  justify-center gap-2 rounded-2xl py-[10px] text-center text-lg font-bold text-primary-green shadow-box'>
           <button
             className='transition-all duration-150 hover:scale-[1.05] focus:scale-[1.05]'
             type='button'
@@ -305,9 +315,13 @@ const GeneralInfo: React.FC<ProductItemProps> = ({
         </div>
         <div className=' flex justify-between gap-8 max-md:w-full max-md:flex-col'>
           <button
+            disabled={!sizes.length}
             onClick={handleAddToCart}
             type='button'
-            className='w-[300px] rounded-2xl bg-primary-green px-10 py-4 text-center font-exo_2 text-lg font-bold text-white-dis shadow-button transition-all duration-300 hover:scale-[1.03]  hover:opacity-80 focus:scale-[1.03] focus:opacity-80 max-md:w-full'
+            className={`w-[300px] rounded-2xl bg-primary-green/60 px-10 py-4 text-center font-exo_2 text-lg font-bold text-white-dis shadow-button transition-all duration-300 ${
+              sizes.length &&
+              ' bg-primary-green/100 hover:scale-[1.03] hover:opacity-80 focus:scale-[1.03] focus:opacity-80'
+            }  max-md:w-full`}
           >
             Купити
           </button>

@@ -51,7 +51,7 @@ export default async function IndexPage({
       ? colorValueParamsArr
           .map(
             (item, index) =>
-              `&filters[colors][name][$in][${index + 1}]=${item}`,
+              `&filters[colors][colorName][$in][${index + 1}]=${item}`,
           )
           .join('')
       : ''
@@ -64,7 +64,7 @@ export default async function IndexPage({
           .join('')
       : ''
 
-  const subcategoryProductsUrl = `/products?populate=*&[filters][subcategory][slug][$eq]=${params.subcategory}&pagination[pageSize]=12&pagination[page]=${currentPage}${sortLatestUrl}${sortLowestPriceUrl}${sortHighestPriceUrl}${filterMinMaxPrice}${colorsFilterUrl}${sizesFilterUrl}`
+  const subcategoryProductsUrl = `/products?populate=*&[filters][subcategory][slug][$eq]=${params.subcategory}&sort=title&pagination[pageSize]=12&pagination[page]=${currentPage}${sortLatestUrl}${sortLowestPriceUrl}${sortHighestPriceUrl}${filterMinMaxPrice}${colorsFilterUrl}${sizesFilterUrl}`
   const subcategoryFilterProductsUrl = `/products?populate=colors,sizes,category,subcategory,page&[filters][subcategory][slug][$eq]=${params.subcategory}`
   const subcategoryCategoriesUrl = `/categories?populate=*&[filters][page][slug][$eq]=zhinky`
   const currentSubcategoryUrl = `/subcategories?populate=*&[filters][slug][$eq]=${params.subcategory}`
@@ -102,16 +102,16 @@ export default async function IndexPage({
   )
 }
 
-export async function generateStaticParams() {
-  const url = `/subcategories`
-  const subcategory = await fetchData(url)
-  return subcategory.data.map(
-    (item: {
-      attributes: {
-        slug: string
-      }
-    }) => ({
-      subcategory: item.attributes.slug,
-    }),
-  )
-}
+// export async function generateStaticParams() {
+//   const url = `/subcategories`
+//   const subcategory = await fetchData(url)
+//   return subcategory.data.map(
+//     (item: {
+//       attributes: {
+//         slug: string
+//       }
+//     }) => ({
+//       subcategory: item.attributes.slug,
+//     }),
+//   )
+// }

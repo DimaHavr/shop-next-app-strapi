@@ -161,26 +161,28 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
           <div className='border-b-1 border-white-dis/80 px-0' />
 
           <div className='flex h-[69vh] flex-col gap-4 overflow-y-auto px-4'>
-            <div className='px-6'>
-              <div className='flex h-full w-full max-w-md flex-col items-start justify-center gap-2'>
-                <Slider
-                  label='Ціна'
-                  formatOptions={{ style: 'currency', currency: 'UAH' }}
-                  step={1}
-                  defaultValue={[minPrice, maxPrice]}
-                  maxValue={maxPrice}
-                  minValue={minPrice}
-                  value={currentPriceValues || [minPrice, maxPrice]}
-                  onChange={setCurrentPriceValues}
-                  classNames={{
-                    base: 'max-w-md gap-3',
-                    labelWrapper:
-                      'font-exo_2 text-md font-semibold text-white-dis',
-                    label: 'font-exo_2 text-lg font-semibold text-white-dis',
-                  }}
-                />
+            {minPrice !== maxPrice && (
+              <div className='px-6'>
+                <div className='flex h-full w-full max-w-md flex-col items-start justify-center gap-2'>
+                  <Slider
+                    label='Ціна'
+                    formatOptions={{ style: 'currency', currency: 'UAH' }}
+                    step={1}
+                    defaultValue={[minPrice, maxPrice]}
+                    maxValue={maxPrice}
+                    minValue={minPrice}
+                    value={currentPriceValues || [minPrice, maxPrice]}
+                    onChange={setCurrentPriceValues}
+                    classNames={{
+                      base: 'max-w-md gap-3',
+                      labelWrapper:
+                        'font-exo_2 text-md font-semibold text-white-dis',
+                      label: 'font-exo_2 text-lg font-semibold text-white-dis',
+                    }}
+                  />
+                </div>
               </div>
-            </div>
+            )}
             <Accordion
               selectionMode='multiple'
               itemClasses={{
@@ -204,13 +206,13 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                       <li key={item}>
                         <button
                           type='button'
-                          className={`${
+                          className={`h-[40px] min-w-[100px] ${
                             colorValue.includes(item) &&
-                            'rounded-2xl border-1 border-white-dis text-white-dis shadow-box'
+                            'rounded-2xl text-white-dis shadow-box'
                           }`}
                           onClick={() => handleColorClick(item)}
                         >
-                          <span className='px-3 py-2 font-exo_2 text-md text-white-dis'>
+                          <span className='px-2 font-exo_2 text-md text-white-dis'>
                             {item}
                           </span>
                         </button>
@@ -233,14 +235,14 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                     return (
                       <li key={item}>
                         <button
-                          className={`${
+                          className={`h-[40px] min-w-[50px]  ${
                             sizeValue.includes(item) &&
-                            'rounded-2xl border-1  border-white-dis text-white-dis shadow-box'
+                            'rounded-2xl text-white-dis shadow-box'
                           }`}
                           type='button'
                           onClick={() => handleSizeClick(item)}
                         >
-                          <span className='px-3 py-2 font-exo_2 text-md text-white-dis'>
+                          <span className='px-3 font-exo_2 text-md text-white-dis'>
                             {item}
                           </span>
                         </button>

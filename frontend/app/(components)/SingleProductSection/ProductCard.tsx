@@ -128,18 +128,23 @@ const ProductCard: React.FC<ProductItemProps> = ({
           <h3 className='line-clamp-2 text-left font-exo_2 text-md font-semibold text-black-dis '>
             {productItem.attributes.title}
           </h3>
-          <p
-            className={`flex items-baseline gap-1 font-exo_2 text-lg uppercase ${
-              productItem.attributes.discount ? 'text-[red]' : 'text-black-dis'
-            }`}
-          >
-            {productItem.attributes.discount && (
-              <span className='text-base text-black-dis line-through'>
-                {oldPrice.toFixed(2)}
-              </span>
-            )}
-            {productItem.attributes.price} uah
-          </p>
+          <div className='flex items-baseline justify-start gap-2'>
+            <h3 className='font-exo_2 text-xl'>Ціна:</h3>
+            <p
+              className={`flex items-baseline gap-1  font-exo_2 text-lg uppercase ${
+                productItem.attributes.discount
+                  ? 'text-[red]'
+                  : 'text-black-dis'
+              }`}
+            >
+              {productItem.attributes.discount && (
+                <span className='text-base text-black-dis line-through'>
+                  {oldPrice.toFixed(2)}
+                </span>
+              )}
+              {productItem.attributes.price} uah
+            </p>
+          </div>
           <div className='flex items-center justify-between gap-4'>
             <div className='flex w-[150px] max-w-xs flex-col gap-2 max-md:w-[130px]'>
               <Select
@@ -168,30 +173,38 @@ const ProductCard: React.FC<ProductItemProps> = ({
                 ))}
               </Select>
             </div>
-            <div className='flex w-[150px] max-w-xs flex-col gap-2 max-md:w-[130px]'>
-              <Select
-                label='Виберіть розмір'
-                variant='underlined'
-                className='max-w-xs'
-                selectedKeys={[size]}
-                onChange={handleSelectionSizeChange}
-              >
-                {sizes.map(sizeItem => (
-                  <SelectItem
-                    key={sizeItem.attributes.size}
-                    value={sizeItem.attributes.size}
-                    textValue={sizeItem.attributes.size}
-                  >
-                    {sizeItem.attributes.size}
-                  </SelectItem>
-                ))}
-              </Select>
-            </div>
+            {!sizes.length ? (
+              <p className='px-3'>Немає в наявності</p>
+            ) : (
+              <div className='flex w-[150px] max-w-xs flex-col gap-2 max-md:w-[130px]'>
+                <Select
+                  label='Виберіть розмір'
+                  variant='underlined'
+                  className='max-w-xs'
+                  selectedKeys={[size]}
+                  onChange={handleSelectionSizeChange}
+                >
+                  {sizes.map(sizeItem => (
+                    <SelectItem
+                      key={sizeItem.attributes.size}
+                      value={sizeItem.attributes.size}
+                      textValue={sizeItem.attributes.size}
+                    >
+                      {sizeItem.attributes.size}
+                    </SelectItem>
+                  ))}
+                </Select>
+              </div>
+            )}
           </div>
           <button
+            disabled={!sizes.length}
             onClick={handleAddToCart}
             type='button'
-            className='my-[10px] w-full rounded-2xl bg-primary-green px-10 py-4 text-center font-exo_2 text-lg font-bold text-white-dis shadow-button transition-all duration-300  hover:scale-[1.03] hover:opacity-80 focus:scale-[1.03] focus:opacity-80 max-sm:w-[250px] max-sm:text-md'
+            className={`my-[10px] w-full rounded-2xl bg-primary-green/60 px-10 py-4 text-center font-exo_2 text-lg font-bold text-white-dis shadow-button transition-all duration-300  ${
+              sizes.length &&
+              'bg-primary-green/100 hover:scale-[1.03] hover:opacity-80 focus:scale-[1.03] focus:opacity-80'
+            } max-sm:w-[250px] max-sm:text-md`}
           >
             Купити
           </button>

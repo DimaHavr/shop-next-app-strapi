@@ -22,7 +22,10 @@ export default async function IndexPage({
     searchParams?.sort === 'lowest_price' ? `&sort=price:asc` : ''
   const sortHighestPriceUrl =
     searchParams?.sort === 'highest_price' ? `&sort=price:desc` : ''
-
+  const sortDefaultUrl =
+    !sortLatestUrl && !sortLowestPriceUrl && !sortHighestPriceUrl
+      ? '&sort=title'
+      : ''
   const priceValueParams = searchParams?.price
     ? [searchParams?.price].toString()
     : ''
@@ -64,7 +67,7 @@ export default async function IndexPage({
           .join('')
       : ''
 
-  const subcategoryProductsUrl = `/products?populate=*&[filters][subcategory][slug][$eq]=${params.subcategory}&sort=title&pagination[pageSize]=12&pagination[page]=${currentPage}${sortLatestUrl}${sortLowestPriceUrl}${sortHighestPriceUrl}${filterMinMaxPrice}${colorsFilterUrl}${sizesFilterUrl}`
+  const subcategoryProductsUrl = `/products?populate=*&[filters][subcategory][slug][$eq]=${params.subcategory}&pagination[pageSize]=12&pagination[page]=${currentPage}${sortDefaultUrl}${sortLatestUrl}${sortLowestPriceUrl}${sortHighestPriceUrl}${filterMinMaxPrice}${colorsFilterUrl}${sizesFilterUrl}`
   const subcategoryFilterProductsUrl = `/products?populate=colors,sizes,category,subcategory,page&[filters][subcategory][slug][$eq]=${params.subcategory}`
   const subcategoryCategoriesUrl = `/categories?populate=*&[filters][page][slug][$eq]=zhinky`
   const currentSubcategoryUrl = `/subcategories?populate=*&[filters][slug][$eq]=${params.subcategory}`
